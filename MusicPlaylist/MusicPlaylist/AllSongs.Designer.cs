@@ -1,6 +1,6 @@
 ﻿namespace MusicPlaylist
 {
-    partial class AllSongs
+    partial class Allsongs
     {
         /// <summary>
         /// Required designer variable.
@@ -28,34 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
-            // panel1
+            // flowLayoutPanel1
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.panel1.Location = new System.Drawing.Point(12, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(558, 368);
-            this.panel1.TabIndex = 0;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(13, 13);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(420, 266);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
-            // AllSongs
+            // Allsongs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(582, 392);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(542, 353);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "AllSongs";
-            this.Text = "AllSongs";
-            this.Load += new System.EventHandler(this.AllSongs_Load);
+            this.Name = "Allsongs";
+            this.Text = "Allsongs";
+            this.Deactivate += new System.EventHandler(this.Allsongs_Deactivate);
+            this.Load += new System.EventHandler(this.Allsongs_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
