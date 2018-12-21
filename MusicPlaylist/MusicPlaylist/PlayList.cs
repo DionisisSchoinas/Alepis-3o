@@ -10,19 +10,11 @@ using System.Windows.Forms;
 
 namespace MusicPlaylist
 {
-    public partial class Form1 : Form
+    public partial class PlayList : Form
     {
-        AllSongs allSongs;
-        public Form1()
+        public PlayList()
         {
             InitializeComponent();
-            allSongs = new AllSongs();
         }
-
-        private void panel2_MouseEnter(object sender, EventArgs e)
-        {
-            allSongs.ShowDialog();
-        }
-        
     }
 }

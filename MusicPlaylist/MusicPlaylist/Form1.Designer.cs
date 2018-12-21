@@ -88,6 +88,7 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(109, 45);
             this.panel2.TabIndex = 2;
+            this.panel2.MouseEnter += new System.EventHandler(this.panel2_MouseEnter);
             // 
             // label2
             // 
@@ -98,6 +99,7 @@
             this.label2.Size = new System.Drawing.Size(96, 24);
             this.label2.TabIndex = 0;
             this.label2.Text = "All songs";
+            this.label2.MouseEnter += new System.EventHandler(this.panel2_MouseEnter);
             // 
             // panel3
             // 
@@ -284,7 +286,8 @@
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "The Music";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
