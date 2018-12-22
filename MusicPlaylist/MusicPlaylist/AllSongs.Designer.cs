@@ -33,21 +33,20 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(13, 13);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(37, 29);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(420, 266);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(442, 284);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // Allsongs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(542, 353);
+            this.ClientSize = new System.Drawing.Size(571, 370);
             this.Controls.Add(this.flowLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Allsongs";
             this.Text = "Allsongs";
-            this.Deactivate += new System.EventHandler(this.Allsongs_Deactivate);
             this.Load += new System.EventHandler(this.Allsongs_Load);
             this.ResumeLayout(false);
 
