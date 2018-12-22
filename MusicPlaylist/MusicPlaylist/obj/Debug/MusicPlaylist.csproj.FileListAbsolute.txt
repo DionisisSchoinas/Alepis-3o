@@ -1,0 +1,11 @@
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\bin\Debug\MusicPlaylist.exe.config
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\bin\Debug\MusicPlaylist.exe
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\bin\Debug\MusicPlaylist.pdb
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.csprojAssemblyReference.cache
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.Form1.resources
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.Properties.Resources.resources
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.csproj.GenerateResource.cache
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.csproj.CoreCompileInputs.cache
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.exe
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.pdb
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.Allsongs.resources
