@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddPanels.cs" />
     <Compile Include="AddSongs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +74,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Song.cs" />
+    <EmbeddedResource Include="AddSongs.resx">
+      <DependentUpon>AddSongs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Allsongs.resx">
       <DependentUpon>Allsongs.cs</DependentUpon>
     </EmbeddedResource>
