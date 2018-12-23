@@ -211,6 +211,7 @@
             this.button8.TabIndex = 18;
             this.button8.Text = "Add +";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // Form1
             // 
@@ -235,7 +236,6 @@
             this.Text = "The Music";
             this.Activated += new System.EventHandler(this.Form1_Activated);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();

@@ -27,36 +27,21 @@ namespace MusicPlaylist
             opened = false;
         }
         
-        private void HidePopUps(object sender, EventArgs e)
-        {
-            Allsongs allSongs = new Allsongs();
-            if ((Button)sender != button6) allSongs.Close();
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             Index = -1;
-            foreach (Control s in this.Controls)
-            {
-                if (s.GetType() == typeof(Button)) s.Click += new EventHandler(HidePopUps);
-                else s.MouseUp += Form1_MouseUp;
-            }
             panel5.Visible = false;
         }
-
-        private bool Inside(Control s, MouseEventArgs e)
+        
+        private void button8_Click(object sender, EventArgs e)
         {
-            if (e.X > s.Location.X + s.Width || e.X < s.Location.X) return false; //If cursor not above control s
-            else if (e.Y > s.Location.Y + s.Height || e.Y < s.Location.Y) return false;
-            return true; //If cursor above control s
+            AddSongs addSongs = new AddSongs();
+            addSongs.StartPosition = FormStartPosition.Manual;
+            addSongs.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
+            addSongs.Size = panel2.Size;
+            addSongs.ShowDialog();
         }
         
-        private void Form1_MouseUp(object sender, MouseEventArgs e)
-        {
-            Allsongs allSongs = new Allsongs();
-            if (!Inside(button6, e)) allSongs.Close();
-        }
-
         private void Form1_Activated(object sender, EventArgs e)
         {
             Allsongs allSongs = new Allsongs();
