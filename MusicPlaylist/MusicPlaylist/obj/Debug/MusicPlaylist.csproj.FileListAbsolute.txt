@@ -15,3 +15,4 @@ J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlayli
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\Interop.WMPLib.dll
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\AxInterop.WMPLib.dll
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.csproj.ResolveComReference.cache
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.InputPopUp.resources

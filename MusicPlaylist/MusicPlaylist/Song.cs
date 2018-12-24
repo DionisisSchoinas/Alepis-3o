@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MusicPlaylist
 {
+    [Serializable]
     class Song
     {
         private int timesPlayed, songLength;
-        private string path, songName, artistName, musicType, language;
-        private DateTime publishDate;
+        private string path, songName, artistName, musicType, language, publishYear;
         private Image image;
         public int TimesPlayed { get { return timesPlayed; } set { timesPlayed = value; } }
         public string Path { get { return path; } set { path = value; } }
@@ -20,7 +20,7 @@ namespace MusicPlaylist
         public int SongLength { get { return songLength; } set { songLength = value; } }
         public string MusicType { get { return musicType; } set { musicType = value; } }
         public string Language { get { return language; } set { language = value; } }
-        public DateTime PublishDate { get { return publishDate; } set { publishDate = value; } }
+        public string PublishYear { get { return publishYear; } set { publishYear = value; } }
         public Image Image { get { return image; } set { image = value; } }
         public Song()
         {
@@ -30,9 +30,8 @@ namespace MusicPlaylist
             artistName = "";
             musicType = "";
             language = "";
-            publishDate = new DateTime();
+            publishYear = "";
             songLength = 0;
-            image = new Bitmap("Files/Pictues/Default.png");
         }
     }
 }

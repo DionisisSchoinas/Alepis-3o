@@ -89,10 +89,25 @@ namespace MusicPlaylist
                     }
                     f.Close();
                     songPanels = new List<Panel>();
-                    //int num = 0;
-                    //foreach (Song s in songList)
-                    for (int num = 0; num < 10; num++)
+                    int num = 0;
+                    foreach (Song s in songList)
                     {
+                        //Adding tooltips
+                        ToolTip tool1 = new ToolTip();
+                        tool1.InitialDelay = 700;
+                        tool1.ReshowDelay = 400;
+                        ToolTip tool2 = new ToolTip();
+                        tool2.InitialDelay = 700;
+                        tool2.ReshowDelay = 400;
+                        ToolTip tool3 = new ToolTip();
+                        tool3.InitialDelay = 700;
+                        tool3.ReshowDelay = 400;
+                        ToolTip tool4 = new ToolTip();
+                        tool4.InitialDelay = 700;
+                        tool4.ReshowDelay = 400;
+                        ToolTip tool5 = new ToolTip();
+                        tool5.InitialDelay = 700;
+                        tool5.ReshowDelay = 400;
                         //Creating main panel for each song
                         Panel p = new Panel();
                         p.Location = new Point(10, 10 + num * 60);
@@ -100,8 +115,7 @@ namespace MusicPlaylist
                         p.BackColor = Color.LightBlue;
                         //Creating picture for each one
                         PictureBox pic = new PictureBox();
-                        //pic.Image = songList[num].Image;
-                        pic.Image = new Bitmap("Files/Pictures/Default.png");
+                        pic.Image = songList[num].Image;
                         pic.SizeMode = PictureBoxSizeMode.Zoom;
                         pic.Location = new Point(2, 2);
                         pic.Size = new Size(p.Size.Height - 5, p.Size.Height - 5);
@@ -111,7 +125,7 @@ namespace MusicPlaylist
                         lab1.Font = new Font("Microsoft Sans Serif", 18, FontStyle.Regular);
                         lab1.ForeColor = Color.Red;
                         lab1.Text = "Name : " + num.ToString();
-                        //lab1.Text = "Name : " + songList[num].SongName;
+                        lab1.Text = "Name : " + songList[num].SongName;
                         lab1.Location = new Point(pic.Size.Width + 7, (int)(p.Size.Height * 0.05));
                         lab1.Size = new Size(new Point((int)(p.Size.Width * 9 / 20), (int)(p.Size.Height * 2 / 5)));
                         lab1.BorderStyle = BorderStyle.FixedSingle;
@@ -120,7 +134,7 @@ namespace MusicPlaylist
                         lab2.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                         lab2.ForeColor = Color.Black;
                         lab2.Text = "Artist : Random dude";
-                        //lab2.Text = "Artist : " + songList[num].ArtistName;
+                        lab2.Text = "Artist : " + songList[num].ArtistName;
                         lab2.Location = new Point((int)(p.Size.Width * 62 / 100), lab1.Location.Y * 5 / 2);
                         lab2.Size = new Size(new Point((int)(p.Size.Width * 7 / 20), (int)(p.Size.Height / 4)));
                         lab2.BorderStyle = BorderStyle.FixedSingle;
@@ -128,8 +142,8 @@ namespace MusicPlaylist
                         Label lab3 = new Label();
                         lab3.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                         lab3.ForeColor = Color.Black;
-                        lab3.Text = "Length :  00:00:00";
-                        //lab3.Text = "Length : " + songList[num].SongLength;
+                        string songL = (songList[num].SongLength / 60).ToString() + ":" + (songList[num].SongLength % 60).ToString();
+                        lab3.Text = "Length :  " + songL;
                         lab3.Location = new Point(pic.Size.Width + 7, lab1.Location.Y * 12);
                         lab3.Size = new Size(new Point((int)(p.Size.Width * 2 / 9), (int)(p.Size.Height / 4)));
                         lab3.BorderStyle = BorderStyle.FixedSingle;
@@ -138,7 +152,7 @@ namespace MusicPlaylist
                         lab4.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                         lab4.ForeColor = Color.Black;
                         lab4.Text = "Type : Some Stuff";
-                        //lab4.Text = "Type : " + songList[num].MusicType;
+                        lab4.Text = "Type : " + songList[num].MusicType;
                         lab4.Location = new Point(lab3.Location.X + lab3.Size.Width + 7, lab1.Location.Y * 12);
                         lab4.Size = new Size(new Point((int)(p.Size.Width * 3 / 11), (int)(p.Size.Height / 4)));
                         lab4.BorderStyle = BorderStyle.FixedSingle;
@@ -147,7 +161,7 @@ namespace MusicPlaylist
                         lab5.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                         lab5.ForeColor = Color.Black;
                         lab5.Text = "Language : Random";
-                        //lab5.Text = "Language : " + songList[num].Language;
+                        lab5.Text = "Language : " + songList[num].Language;
                         lab5.Location = new Point(lab4.Location.X + lab4.Size.Width + 7, lab1.Location.Y * 12);
                         lab5.Size = new Size(new Point((int)(p.Size.Width * 3 / 11), (int)(p.Size.Height / 4)));
                         lab5.BorderStyle = BorderStyle.FixedSingle;
@@ -161,23 +175,30 @@ namespace MusicPlaylist
                         p.Controls.Add(pic);                                                       //as an argument for the other forms to access
                         lab1.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
                         lab1.DoubleClick += new EventHandler(DoubleClick);
+                        tool1.SetToolTip(lab1, lab1.Text);
                         p.Controls.Add(lab1);
                         lab2.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
                         lab2.DoubleClick += new EventHandler(DoubleClick);
+                        tool2.SetToolTip(lab2, lab2.Text);
                         p.Controls.Add(lab2);
                         lab3.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
                         lab3.DoubleClick += new EventHandler(DoubleClick);
+                        tool3.SetToolTip(lab3, lab3.Text + " ( hh:mm:ss )");
                         p.Controls.Add(lab3);
                         lab4.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
                         lab4.DoubleClick += new EventHandler(DoubleClick);
+                        tool4.SetToolTip(lab4, lab4.Text);
                         p.Controls.Add(lab4);
                         lab5.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
                         lab5.DoubleClick += new EventHandler(DoubleClick);
+                        tool5.SetToolTip(lab5, lab5.Text);
                         p.Controls.Add(lab5);
 
                         //Adding the panel to the flowPanel and to the songPanels
                         songPanels.Add(p);
                         x.Controls.Add(p);
+
+                        num++;
                     }
                 }
             }

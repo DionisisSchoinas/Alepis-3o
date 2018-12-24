@@ -7,15 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 namespace MusicPlaylist
 {
     public partial class AddSongs : Form
     {
+        string name;
+        int length;
+
         public AddSongs()
         {
             InitializeComponent();
+            name = "";
+            length = 0;
         }
 
         private void AddSongs_Load(object sender, EventArgs e)
@@ -77,23 +83,16 @@ namespace MusicPlaylist
             int count = Directory.GetFiles("Files/Songs").Length;
             openFileDialog1.Filter = "WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3|Other files|*.*";
             openFileDialog1.FileName = "Song" + (count + 1).ToString();
-            openFileDialog1.Title = "Choose picture";
+            openFileDialog1.Title = "Choose a song";
             DialogResult result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
                 try
                 {
-                    textBox2.Visible = true;
-                    textBox3.Visible = true;
-                    textBox4.Visible = true;
-                    textBox5.Visible = true;
-                    button1.Enabled = true;
-                    button1.BackColor = Color.LightGreen;
-                    button4.Enabled = true;
-                    button4.BackColor = Color.LightGreen;
                     textBox1.Text = openFileDialog1.FileName.ToString();
                     axWindowsMediaPlayer1.URL = textBox1.Text;
-                    label1.Text = "Name : " + axWindowsMediaPlayer1.Ctlcontrols.currentItem.name;
+                    name = axWindowsMediaPlayer1.Ctlcontrols.currentItem.name;
+                    label1.Text = "Name : " + name;
                 }
                 catch
                 {
@@ -107,7 +106,7 @@ namespace MusicPlaylist
             int count = Directory.GetFiles("Files/Pictures").Length;
             openFileDialog1.Filter = "PNG files (*.png)|*.png|JPEG files (*.jpg)|*.jpg|Bitmap files (*.bmp)|*.bmp|GIF files (*.gif)|*.gif|Other files|*.*";
             openFileDialog1.FileName = "Image" + (count + 1).ToString();
-            openFileDialog1.Title = "Choose picture";
+            openFileDialog1.Title = "Choose a picture";
             DialogResult result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -124,14 +123,79 @@ namespace MusicPlaylist
 
         private void button1_Click(object sender, EventArgs e)
         {
+            bool b = true;
+            axWindowsMediaPlayer1.Ctlcontrols.stop();
+            Song newSong = new Song();
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
+            List<Song> list;
+            try
+            {
+                list = (List<Song>)bf.Deserialize(f);
+            }
+            catch
+            {
+                list = new List<Song>();
+            }
+            f.Close();
+            foreach (Song s in list)
+            {
+                if (s.SongName == name)
+                {
+                    DialogResult res = MessageBox.Show("Song with this name already exists !\nDo you want to change the name of this song ?", "Error", MessageBoxButtons.YesNo);
+                    if (res == DialogResult.Yes)
+                    {
+                        InputPopUp inp = new InputPopUp();
+                        inp.ShowDialog();
+                        if (inp.change)
+                        {
+                            b = true;
+                            name = inp.name;
+                            button1_Click(sender, e);
+                        }
+                    }
+                    else if (res == DialogResult.No)
+                    {
+                        b = false;
+                        break;
+                    }
+                }
+            }
+            if (b)
+            {
+                newSong.Path = textBox1.Text;
+                newSong.SongName = name;
+                newSong.SongLength = length;
+                newSong.ArtistName = textBox2.Text;
+                newSong.MusicType = textBox3.Text;
+                newSong.Language = textBox4.Text;
+                newSong.PublishYear = textBox5.Text;
+                newSong.Image = pictureBox1.Image;
+                list.Add(newSong);
+                BinaryFormatter bf1 = new BinaryFormatter();
+                FileStream f1 = new FileStream("Files/Songs/songs.dat", FileMode.Create);
+                bf1.Serialize(f1, list);
+                f1.Close();
+                MessageBox.Show("Song successfully added");
+                this.Close();
+            }
         }
 
+        //If song/video loaded then get this data otherwise it would return 0
         private void axWindowsMediaPlayer1_OpenStateChange(object sender, AxWMPLib._WMPOCXEvents_OpenStateChangeEvent e)
         {
             if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
             {
+                textBox2.Visible = true;
+                textBox3.Visible = true;
+                textBox4.Visible = true;
+                textBox5.Visible = true;
+                button1.Enabled = true;
+                button1.BackColor = Color.LightGreen;
+                button4.Enabled = true;
+                button4.BackColor = Color.LightGreen;
                 string[] duration = axWindowsMediaPlayer1.currentMedia.durationString.Split(':');
-                int sec = int.Parse(duration[1]) + int.Parse(duration[0]) * 60;
+                length = int.Parse(duration[1]) + int.Parse(duration[0]) * 60;
                 axWindowsMediaPlayer1.Ctlcontrols.stop();
                 label2.Text = "Length :  " + int.Parse(duration[0]) + ":" + int.Parse(duration[1]) + " (hh:mm:ss)";
             }
@@ -141,13 +205,13 @@ namespace MusicPlaylist
         {
             if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
             {
-                axWindowsMediaPlayer1.Ctlcontrols.stop();
+                axWindowsMediaPlayer1.Ctlcontrols.pause();
                 button4.Text = "Play";
             }
-            else if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsStopped)
+            else if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused || axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsStopped)
             {
                 axWindowsMediaPlayer1.Ctlcontrols.play();
-                button4.Text = "Stop";
+                button4.Text = "Pause";
             }
         }
     }
