@@ -24,14 +24,14 @@ namespace MusicPlaylist
         public Image Image { get { return image; } set { image = value; } }
         public Song()
         {
-            timesPlayed = 0;
-            path = "";
-            songName = "";
-            artistName = "";
-            musicType = "";
-            language = "";
-            publishYear = "";
-            songLength = 0;
+            TimesPlayed = 0;
+            Path = "";
+            SongName = "";
+            ArtistName = "";
+            MusicType = "";
+            Language = "";
+            PublishYear = "";
+            SongLength = 0;
         }
     }
 }

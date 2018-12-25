@@ -17,15 +17,32 @@ namespace MusicPlaylist
         Form parentForm;
         int selectedIndex = -1;
         public int Index { get { return selectedIndex; } set { selectedIndex = value; } }
+        public List<int> indexList = new List<int>();
 
-        private void Selected(object sender, EventArgs e, int i)
+        private void Selected(object sender, EventArgs e, int i, bool checkOn)
         {
-            foreach (Panel p in songPanels)
+            if (!checkOn)
             {
-                p.BackColor = Color.LightBlue;
+                foreach (Panel p in songPanels)
+                {
+                    p.BackColor = Color.LightBlue;
+                }
+                selectedIndex = i;
+                songPanels[i].BackColor = Color.LightGreen;
             }
-            songPanels[i].BackColor = Color.LightGreen;
-            selectedIndex = i;
+            else
+            {
+                if (songPanels[i].BackColor == Color.LightGreen)
+                {
+                    songPanels[i].BackColor = Color.LightBlue;
+                    indexList.Remove(i);
+                }
+                else if (songPanels[i].BackColor == Color.LightBlue)
+                {
+                    songPanels[i].BackColor = Color.LightGreen;
+                    indexList.Add(i);
+                }
+            }
         }
 
         private void DoubleClick(object sender, EventArgs e)
@@ -35,15 +52,18 @@ namespace MusicPlaylist
                 Allsongs x = (Allsongs)parentForm;
                 x.Play(sender, e);
             }
+            else if (parentForm.GetType() == typeof(Playlists_List))
+            {
+                Playlists_List x = (Playlists_List)parentForm;
+                x.Select(sender, e);
+            }
         }
 
-        public void AddPanels_OnGivenControl(Form parent, Control input, List<Song> sL, List<Panel> sP, object sender, EventArgs e) //parent = form that contains the control
-        {              //x = cotnrol we want to add panels in    songList = list to be returned    songPanels = list of panels we added
-            try
+        public void AddPanels_OnGivenControl(Form parent, Control input, object sender, EventArgs e, bool checkOn, List<Song> alreadyUsed, bool justSongs, List<Song> sourceList) //parent = form that contains the control
+        {              //x = control we want to add panels in   checkON = if checkOn true then multiple panels can be selected
+            try        //alreadyUsed = if not null then the items in the list will be highlighted    justSongs = displaying songs (true) or playlists (false)    sL = source list for songs to be displayed
             {
                 parentForm = parent;
-                songList = sL;
-                songPanels = sP;
                 if (input.GetType() == typeof(FlowLayoutPanel))  //If type of input is FormLayoutPanel
                 {
                     FlowLayoutPanel x = (FlowLayoutPanel)input;  //Changing type of input to FormLayoutPanel
@@ -60,7 +80,7 @@ namespace MusicPlaylist
                         songPanels.Clear();
                     }
                     catch { }
-                    foreach (Control s in parent.Controls) //Remvoe button
+                    foreach (Control s in parent.Controls) //Remove button
                     {
                         if (s.GetType() == typeof(Button))
                         {
@@ -70,24 +90,14 @@ namespace MusicPlaylist
                     }
 
                     x.AutoScroll = true;
-                    if (parent.GetType() == typeof(Allsongs))
+                    if (parent.GetType() == typeof(Allsongs) || parent.GetType() == typeof(RemoveSongs) || parent.GetType() == typeof(PlayList) || parent.GetType() == typeof(Playlists_List))
                     {
                         x.Location = new Point(1, 1);
                         x.Size = new Size(new Point(parent.Width - 1, parent.Height - 61));
                     }
                     parent.BackColor = Color.LightBlue;
                     x.BackColor = Color.White;
-                    BinaryFormatter bf = new BinaryFormatter();
-                    FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
-                    try
-                    {
-                        songList = (List<Song>)bf.Deserialize(f);
-                    }
-                    catch
-                    {
-                        songList = new List<Song>();
-                    }
-                    f.Close();
+                    songList = sourceList;
                     songPanels = new List<Panel>();
                     int num = 0;
                     foreach (Song s in songList)
@@ -124,34 +134,46 @@ namespace MusicPlaylist
                         Label lab1 = new Label();
                         lab1.Font = new Font("Microsoft Sans Serif", 18, FontStyle.Regular);
                         lab1.ForeColor = Color.Red;
-                        lab1.Text = "Name : " + num.ToString();
                         lab1.Text = "Name : " + songList[num].SongName;
                         lab1.Location = new Point(pic.Size.Width + 7, (int)(p.Size.Height * 0.05));
                         lab1.Size = new Size(new Point((int)(p.Size.Width * 9 / 20), (int)(p.Size.Height * 2 / 5)));
                         lab1.BorderStyle = BorderStyle.FixedSingle;
-                        //Artist Name
-                        Label lab2 = new Label();
-                        lab2.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                        lab2.ForeColor = Color.Black;
-                        lab2.Text = "Artist : Random dude";
-                        lab2.Text = "Artist : " + songList[num].ArtistName;
-                        lab2.Location = new Point((int)(p.Size.Width * 62 / 100), lab1.Location.Y * 5 / 2);
-                        lab2.Size = new Size(new Point((int)(p.Size.Width * 7 / 20), (int)(p.Size.Height / 4)));
-                        lab2.BorderStyle = BorderStyle.FixedSingle;
                         //Length 
                         Label lab3 = new Label();
                         lab3.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                         lab3.ForeColor = Color.Black;
-                        string songL = (songList[num].SongLength / 60).ToString() + ":" + (songList[num].SongLength % 60).ToString();
+                        string songL;
+                        if (justSongs) songL = (songList[num].SongLength / 60).ToString() + ":" + (songList[num].SongLength % 60).ToString();
+                        else
+                        {
+                            BinaryFormatter bf = new BinaryFormatter();
+                            FileStream f = new FileStream(s.Path, FileMode.OpenOrCreate);
+                            try
+                            {
+                                List<Song> tempList = (List<Song>)bf.Deserialize(f);
+                                songL = tempList.Count().ToString();
+                            }
+                            catch
+                            {
+                                songL = "0";
+                            }
+                        }
                         lab3.Text = "Length :  " + songL;
                         lab3.Location = new Point(pic.Size.Width + 7, lab1.Location.Y * 12);
                         lab3.Size = new Size(new Point((int)(p.Size.Width * 2 / 9), (int)(p.Size.Height / 4)));
                         lab3.BorderStyle = BorderStyle.FixedSingle;
+                        //Artist Name
+                        Label lab2 = new Label();
+                        lab2.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
+                        lab2.ForeColor = Color.Black;
+                        lab2.Text = "Artist : " + songList[num].ArtistName;
+                        lab2.Location = new Point((int)(p.Size.Width * 62 / 100), lab1.Location.Y * 5 / 2);
+                        lab2.Size = new Size(new Point((int)(p.Size.Width * 7 / 20), (int)(p.Size.Height / 4)));
+                        lab2.BorderStyle = BorderStyle.FixedSingle;
                         //Music type 
                         Label lab4 = new Label();
                         lab4.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                         lab4.ForeColor = Color.Black;
-                        lab4.Text = "Type : Some Stuff";
                         lab4.Text = "Type : " + songList[num].MusicType;
                         lab4.Location = new Point(lab3.Location.X + lab3.Size.Width + 7, lab1.Location.Y * 12);
                         lab4.Size = new Size(new Point((int)(p.Size.Width * 3 / 11), (int)(p.Size.Height / 4)));
@@ -160,7 +182,6 @@ namespace MusicPlaylist
                         Label lab5 = new Label();
                         lab5.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                         lab5.ForeColor = Color.Black;
-                        lab5.Text = "Language : Random";
                         lab5.Text = "Language : " + songList[num].Language;
                         lab5.Location = new Point(lab4.Location.X + lab4.Size.Width + 7, lab1.Location.Y * 12);
                         lab5.Size = new Size(new Point((int)(p.Size.Width * 3 / 11), (int)(p.Size.Height / 4)));
@@ -168,31 +189,47 @@ namespace MusicPlaylist
 
                         //Adding the controls to the panel
                         int index = num;  //Using different variable for num 
-                        p.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));  //Call function Selected with given arguments
+                        p.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));  //Call function Selected with given arguments
                         p.DoubleClick += new EventHandler(DoubleClick);
-                        pic.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));//so we can also send the current index / song 
+                        pic.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));//so we can also send the current index / song 
                         pic.DoubleClick += new EventHandler(DoubleClick);
                         p.Controls.Add(pic);                                                       //as an argument for the other forms to access
-                        lab1.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
+                        lab1.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
                         lab1.DoubleClick += new EventHandler(DoubleClick);
                         tool1.SetToolTip(lab1, lab1.Text);
                         p.Controls.Add(lab1);
-                        lab2.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
-                        lab2.DoubleClick += new EventHandler(DoubleClick);
-                        tool2.SetToolTip(lab2, lab2.Text);
-                        p.Controls.Add(lab2);
-                        lab3.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
+                        lab3.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
                         lab3.DoubleClick += new EventHandler(DoubleClick);
                         tool3.SetToolTip(lab3, lab3.Text + " ( hh:mm:ss )");
                         p.Controls.Add(lab3);
-                        lab4.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
-                        lab4.DoubleClick += new EventHandler(DoubleClick);
-                        tool4.SetToolTip(lab4, lab4.Text);
-                        p.Controls.Add(lab4);
-                        lab5.Click += new EventHandler((sender2, e2) => Selected(sender, e, index));
-                        lab5.DoubleClick += new EventHandler(DoubleClick);
-                        tool5.SetToolTip(lab5, lab5.Text);
-                        p.Controls.Add(lab5);
+                        if (justSongs)
+                        {
+                            lab2.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
+                            lab2.DoubleClick += new EventHandler(DoubleClick);
+                            tool2.SetToolTip(lab2, lab2.Text);
+                            p.Controls.Add(lab2);
+                            lab4.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
+                            lab4.DoubleClick += new EventHandler(DoubleClick);
+                            tool4.SetToolTip(lab4, lab4.Text);
+                            p.Controls.Add(lab4);
+                            lab5.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
+                            lab5.DoubleClick += new EventHandler(DoubleClick);
+                            tool5.SetToolTip(lab5, lab5.Text);
+                            p.Controls.Add(lab5);
+                        }
+                        
+                        //If the song already in the playlist highlight
+                        if (!justSongs && alreadyUsed.Count() != 0)
+                        {
+                            foreach (Song t in alreadyUsed)
+                            {
+                                if (t == s)
+                                {
+                                    p.BackColor = Color.LightGreen;
+                                    break;
+                                }
+                            }
+                        }
 
                         //Adding the panel to the flowPanel and to the songPanels
                         songPanels.Add(p);
@@ -202,7 +239,10 @@ namespace MusicPlaylist
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

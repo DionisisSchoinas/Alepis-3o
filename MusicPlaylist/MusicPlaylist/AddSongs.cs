@@ -145,7 +145,7 @@ namespace MusicPlaylist
                     DialogResult res = MessageBox.Show("Song with this name already exists !\nDo you want to change the name of this song ?", "Error", MessageBoxButtons.YesNo);
                     if (res == DialogResult.Yes)
                     {
-                        InputPopUp inp = new InputPopUp();
+                        InputPopUp inp = new InputPopUp("Give the new Name of the song");
                         inp.ShowDialog();
                         if (inp.change)
                         {

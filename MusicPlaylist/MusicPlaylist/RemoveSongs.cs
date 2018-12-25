@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,44 +12,45 @@ using System.IO;
 
 namespace MusicPlaylist
 {
-    public partial class Allsongs : Form
+    public partial class RemoveSongs : Form
     {
         List<Song> songList;
         List<Panel> songPanels;
-        int index;
-        public int Index { get { return index; } set { index = value; } }
+        public List<int> indexList;
         AddPanels ap;
+        bool del;
 
-        public Allsongs()
+        public RemoveSongs(bool x) //if x = true then we remove songs  else creating playlist
         {
             InitializeComponent();
-            ap = new AddPanels();
+            indexList = new List<int>();
             songList = new List<Song>();
             songPanels = new List<Panel>();
-            Index = -1;
+            ap = new AddPanels();
+            del = x;
         }
-        
-        public void Play(object sender, EventArgs e)
+
+        private void Remove(object sender, EventArgs e)
         {
-            Index = ap.Index;
-            if (Index != -1)
+            indexList = ap.indexList;
+            if (indexList.Count != 0)
             {
                 this.Close();
             }
-            else MessageBox.Show("Select a song before playing");
+            else MessageBox.Show("Select at least one song");
         }
 
         private void Exit(object sender, EventArgs e)
         {
-            Index = -1;
+            indexList = new List<int>();
             this.Close();
         }
 
-        private void Allsongs_Load(object sender, EventArgs e)
+        private void RemoveSongs_Load(object sender, EventArgs e)
         {
             //Create the panels for the songs with the class
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
+            FileStream f = new FileStream("Files/Songs/songs.dat",FileMode.OpenOrCreate);
             try
             {
                 songList = (List<Song>)bf.Deserialize(f);
@@ -59,16 +60,17 @@ namespace MusicPlaylist
                 songList = new List<Song>();
             }
             f.Close();
-            ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, false, new List<Song>(), true, songList);
-            
-            Button play = new Button();
-            play.Location = new Point(this.Width / 2 + 30, this.Height - 60);
-            play.Size = new Size(60, 60);
-            play.Click += new EventHandler(Play);
-            play.Text = "Play";
-            play.BackColor = Color.LightGreen;
+            ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, true, new List<Song>(), true, songList);
+
+            Button remove = new Button();
+            remove.Location = new Point(this.Width / 2 + 30, this.Height - 60);
+            remove.Size = new Size(60, 60);
+            remove.Click += new EventHandler(Remove);
+            if (del) remove.Text = "Remove";
+            else remove.Text = "Create";
+            remove.BackColor = Color.LightGreen;
             //play.Image = new Bitmap("");
-            this.Controls.Add(play);
+            this.Controls.Add(remove);
 
             Button exit = new Button();
             exit.Location = new Point(this.Width / 2 - 90, this.Height - 60);
@@ -79,7 +81,5 @@ namespace MusicPlaylist
             //exit.Image = new Bitmap("");
             this.Controls.Add(exit);
         }
-
-        
     }
 }

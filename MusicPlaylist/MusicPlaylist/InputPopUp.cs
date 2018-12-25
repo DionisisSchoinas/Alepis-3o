@@ -15,11 +15,14 @@ namespace MusicPlaylist
         public bool change;
         public string name;
 
-        public InputPopUp()
+        public InputPopUp(string inp)
         {
             InitializeComponent();
             change = false;
             name = "";
+            label1.Text = inp;
+            if (inp == "Give the Name of the playlist") button1.Text = "Confirm";
+            else button1.Text = "Change";
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -33,6 +36,7 @@ namespace MusicPlaylist
             {
                 change = true;
                 name = textBox1.Text;
+                this.Close();
             }
             else
             {

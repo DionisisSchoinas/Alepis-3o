@@ -16,3 +16,6 @@ J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlayli
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\AxInterop.WMPLib.dll
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.csproj.ResolveComReference.cache
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.InputPopUp.resources
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.RemoveSongs.resources
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.PlayList.resources
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.Playlists_List.resources
