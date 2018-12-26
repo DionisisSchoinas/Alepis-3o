@@ -19,6 +19,7 @@ namespace MusicPlaylist
         int index;
         public int Index { get { return index; } set { index = value; } }
         AddPanels ap;
+        int indexSelected { get; set; }
 
         public Allsongs()
         {
@@ -45,6 +46,21 @@ namespace MusicPlaylist
             this.Close();
         }
 
+        private void Edit(object sender, EventArgs e)
+        {
+            int indexSelected = ap.Index;
+            if (indexSelected != -1)
+            {
+                AddSongs add = new AddSongs(false, indexSelected);
+                add.StartPosition = FormStartPosition.Manual;
+                add.Location = new Point(this.Location.X, this.Location.Y);
+                add.Size = this.Size;
+                add.ShowDialog();
+                Allsongs_Load(sender, e);
+            }
+            else MessageBox.Show("Select a song before editing");
+        }
+
         private void Allsongs_Load(object sender, EventArgs e)
         {
             //Create the panels for the songs with the class
@@ -62,22 +78,28 @@ namespace MusicPlaylist
             ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, false, new List<Song>(), true, songList);
             
             Button play = new Button();
-            play.Location = new Point(this.Width / 2 + 30, this.Height - 60);
+            play.Location = new Point(this.Width / 2 + 60, this.Height - 60);
             play.Size = new Size(60, 60);
             play.Click += new EventHandler(Play);
             play.Text = "Play";
             play.BackColor = Color.LightGreen;
-            //play.Image = new Bitmap("");
             this.Controls.Add(play);
 
             Button exit = new Button();
-            exit.Location = new Point(this.Width / 2 - 90, this.Height - 60);
+            exit.Location = new Point(this.Width / 2 - 120, this.Height - 60);
             exit.Size = new Size(60, 60);
             exit.Click += new EventHandler(Exit);
             exit.Text = "Exit";
             exit.BackColor = Color.LightGreen;
-            //exit.Image = new Bitmap("");
             this.Controls.Add(exit);
+
+            Button edit = new Button();
+            edit.Location = new Point(this.Width / 2 - 30, this.Height - 60);
+            edit.Size = new Size(60, 60);
+            edit.Click += new EventHandler(Edit);
+            edit.Text = "Edit";
+            edit.BackColor = Color.LightGreen;
+            this.Controls.Add(edit);
         }
 
         

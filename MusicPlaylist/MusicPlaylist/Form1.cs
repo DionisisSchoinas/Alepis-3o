@@ -16,11 +16,12 @@ namespace MusicPlaylist
     {
         int index;
         int Index { get { return index; } set { index = value; } }
-        bool opened, changingValue;
+        bool opened, changingValue, repeat, soloSong;
         ToolTip tool1, tool2, tool3, tool4;
         List<Song> playList;
-        int playListIndex, currentLength, counter;
+        int playListIndex, currentLength, counter, counterSolo;
         BinaryFormatter bf;
+        Song currentSong;
 
         public Form1()
         {
@@ -31,6 +32,10 @@ namespace MusicPlaylist
             currentLength = -1;
             counter = 0;
             bf = new BinaryFormatter();
+            repeat = false;
+            button1.ForeColor = this.BackColor;
+            soloSong = true;
+            counterSolo = 0;
         }
         
         private void SetTrackbarToolTip(object sender)
@@ -65,11 +70,34 @@ namespace MusicPlaylist
             button1.BackgroundImage = new Bitmap("Files/Pictures/Play.png");
             button2.BackgroundImage = new Bitmap("Files/Pictures/Next.png");
             button3.BackgroundImage = new Bitmap("Files/Pictures/Previous.png");
+            button5.BackgroundImage = new Bitmap("Files/Pictures/Random.png");
+            button4.BackgroundImage = new Bitmap("Files/Pictures/Repeat.png");
+
+            FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
+            List<Song> top10;
+            try
+            {
+                top10 = (List<Song>)bf.Deserialize(f);
+            }
+            catch
+            {
+                top10 = new List<Song>();
+            }
+            f.Close();
+
+            top10 = top10.OrderBy(d => d.TimesPlayed).ToList();
+            //top10 = top10.Reverse();
+            
+            AddPanels ap = new AddPanels();
+            //ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, false, new List<Song>(), true, top10);
+
         }
 
         private void LoadSong(Song s)
         {
             bool loaded = true;
+            currentSong = s;
+            counterSolo = 0;
             button1.BackgroundImage = new Bitmap("Files/Pictures/Pause.png");
             pictureBox1.Image = s.Image;
             label5.Text = "Song : " + s.SongName;
@@ -96,6 +124,7 @@ namespace MusicPlaylist
                 button5.Enabled = true;
                 axWindowsMediaPlayer1.Ctlcontrols.play();
                 timer1.Start();
+                timer3.Start();
             }
             tool1.SetToolTip(label5, label5.Text);
             tool2.SetToolTip(label6, label6.Text);
@@ -104,15 +133,21 @@ namespace MusicPlaylist
 
         private void LoadPlayList(List<Song> list)
         {
+            soloSong = false;
+            playList = list;
             button2.Enabled = true;
+            button2.BackColor = this.BackColor;
             button3.Enabled = true;
+            button3.BackColor = this.BackColor;
             if (playListIndex == 0)
             {
                 button3.Enabled = false;
+                button3.BackColor = Color.Gainsboro;
             }
             if (playListIndex == list.Count() - 1)
             {
                 button2.Enabled = false;
+                button2.BackColor = Color.Gainsboro;
             }
             if (playListIndex < list.Count())
             {
@@ -143,6 +178,7 @@ namespace MusicPlaylist
             {
                 axWindowsMediaPlayer1.Ctlcontrols.currentPosition = trackBar1.Value;
                 counter = trackBar1.Value;
+                counterSolo = trackBar1.Value;
                 trackBarUpdate.Stop();
                 SetTrackbarToolTip(trackBar1);
             }
@@ -194,7 +230,7 @@ namespace MusicPlaylist
             RemoveSettings rmSettings = new RemoveSettings();
             rmSettings.StartPosition = FormStartPosition.Manual;
             rmSettings.BackColor = Color.LightBlue;
-            rmSettings.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + button9.Location.Y + 32 - button9.Height - 20);
+            rmSettings.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + button9.Location.Y + 32 - button9.Height - 20);
             rmSettings.Size = new Size(button9.Width + 20, button9.Height * 3 + 40);
             rmSettings.ShowDialog();
             int choice = rmSettings.choice;
@@ -202,8 +238,8 @@ namespace MusicPlaylist
             {
                 RemoveSongs removeSongs = new RemoveSongs(0);
                 removeSongs.StartPosition = FormStartPosition.Manual;
-                removeSongs.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
-                removeSongs.Size = panel2.Size;
+                removeSongs.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
+                removeSongs.Size = flowLayoutPanel1.Size;
                 removeSongs.ShowDialog();
                 List<int> indexList = removeSongs.indexList;
                 if (indexList.Count() != 0)
@@ -248,8 +284,8 @@ namespace MusicPlaylist
             {
                 RemoveSongs removeSongs = new RemoveSongs(2);
                 removeSongs.StartPosition = FormStartPosition.Manual;
-                removeSongs.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
-                removeSongs.Size = panel2.Size;
+                removeSongs.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
+                removeSongs.Size = flowLayoutPanel1.Size;
                 removeSongs.ShowDialog();
                 List<int> indexList = removeSongs.indexList;
                 if (indexList.Count() != 0)
@@ -281,7 +317,9 @@ namespace MusicPlaylist
                                 {
                                     button1.Enabled = false;
                                     button2.Enabled = false;
+                                    button2.BackColor = Color.Gainsboro; 
                                     button3.Enabled = false;
+                                    button3.BackColor = Color.Gainsboro;
                                     button4.Enabled = false;
                                     button5.Enabled = false;
                                     axWindowsMediaPlayer1.Ctlcontrols.stop();
@@ -319,17 +357,24 @@ namespace MusicPlaylist
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (playListIndex <= playList.Count() - 1)
+            if (playListIndex < playList.Count() - 1 && playListIndex >= 0)
             {
                 timer2.Stop();
                 playListIndex++;
                 LoadPlayList(playList);
             }
+            else if (sender.GetType() != typeof(Timer))
+            {
+                timer2.Stop();
+                button2.Enabled = false;
+                button2.BackColor = Color.Gainsboro;
+                playListIndex = -1;
+            }
             else
             {
                 timer2.Stop();
                 button2.Enabled = false;
-                playListIndex = -1;
+                button2.BackColor = Color.Gainsboro;
             }
         }
 
@@ -345,15 +390,68 @@ namespace MusicPlaylist
             {
                 timer2.Stop();
                 button3.Enabled = false;
+                button3.BackColor = Color.Gainsboro;
             }
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            if (counterSolo == currentSong.SongLength + 2)
+            {
+                counterSolo = 0;
+                timer3.Stop();
+                if (repeat)
+                {
+                    LoadSong(currentSong);
+                }
+            }
+            else counterSolo++;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            axWindowsMediaPlayer1.Ctlcontrols.stop();
+            axWindowsMediaPlayer1.URL = "";
+            playListIndex = 0;
+            FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
+            List<Song> list;
+            try
+            {
+                list = (List<Song>)bf.Deserialize(f);
+            }
+            catch
+            {
+                list = new List<Song>();
+            }
+            if (list.Count() != 0)
+            {
+                Random r = new Random();
+                int n = list.Count() - 1;
+                while (n > 0)
+                {
+                    int k = r.Next(n + 1);
+                    Song tmp = list[k];
+                    list[k] = list[n];
+                    list[n] = tmp;
+                    n--;
+                }
+                LoadPlayList(list);
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (repeat) button4.BackColor = this.BackColor;
+            else button4.BackColor = Color.LightCoral;
+            repeat = !repeat;
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             Playlists_List playl = new Playlists_List();
             playl.StartPosition = FormStartPosition.Manual;
-            playl.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
-            playl.Size = panel2.Size;
+            playl.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
+            playl.Size = flowLayoutPanel1.Size;
             playl.ShowDialog();
             int ind = playl.Index;
             if (ind != -1)
@@ -376,15 +474,14 @@ namespace MusicPlaylist
                 {
                     listSongs = (List<Song>)bf.Deserialize(f1);
                 }
-                catch (Exception ex)
+                catch
                 {
                     listSongs = new List<Song>();
                 }
                 f1.Close();
                 axWindowsMediaPlayer1.Ctlcontrols.stop();
-                playList = listSongs;
                 playListIndex = 0;
-                LoadPlayList(playList);
+                LoadPlayList(listSongs);
             }
         }
         
@@ -392,9 +489,17 @@ namespace MusicPlaylist
         {
             if (counter == currentLength + 2)
             {
-                playListIndex++;
                 counter = 0;
-                LoadPlayList(playList);
+                if (repeat && playListIndex == playList.Count() - 1)
+                {
+                    playListIndex = 0;
+                    LoadPlayList(playList);
+                }
+                else button2_Click(sender, e);
+            }
+            else
+            {
+                counter++;
             }
         }
         
@@ -407,10 +512,10 @@ namespace MusicPlaylist
 
         private void button8_Click(object sender, EventArgs e)
         {
-            AddSongs addSongs = new AddSongs();
+            AddSongs addSongs = new AddSongs(true, -1);
             addSongs.StartPosition = FormStartPosition.Manual;
-            addSongs.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
-            addSongs.Size = panel2.Size;
+            addSongs.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
+            addSongs.Size = flowLayoutPanel1.Size;
             addSongs.ShowDialog();
         }
         
@@ -429,8 +534,8 @@ namespace MusicPlaylist
             Allsongs allSongs = new Allsongs();
             opened = true;
             allSongs.StartPosition = FormStartPosition.Manual;
-            allSongs.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
-            allSongs.Size = panel2.Size;
+            allSongs.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
+            allSongs.Size = flowLayoutPanel1.Size;
             allSongs.ShowDialog();
             Index = allSongs.Index;
             if (Index != -1)

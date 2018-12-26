@@ -16,19 +16,62 @@ namespace MusicPlaylist
     {
         string name;
         int length;
+        bool adding;
+        int selectedIndex;
 
-        public AddSongs()
+        public AddSongs(bool x, int index)  // x = true - adding new song    x = false - editing existing song
         {
             InitializeComponent();
             name = "";
             length = 0;
+            adding = x;
+            selectedIndex = index;
         }
 
         private void AddSongs_Load(object sender, EventArgs e)
         {
             this.BackColor = Color.LightBlue;
-            panel1.Location = new Point(3, 41);
-            panel1.Size = new Size(this.Width - 6, this.Height - 100);
+            if (adding)
+            {
+                panel1.Location = new Point(3, 41);
+                panel1.Size = new Size(this.Width - 6, this.Height - 100);
+            }
+            else
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
+                List<Song> list;
+                try
+                {
+                    list = (List<Song>)bf.Deserialize(f);
+                }
+                catch
+                {
+                    list = new List<Song>();
+                }
+                f.Close();
+                Song s = list[selectedIndex];
+                name = s.SongName;
+                label1.Text = "Name : " + s.SongName;
+                label2.Text = "Length :  " + (s.SongLength / 60).ToString() + ":" + (s.SongLength % 60).ToString() + " ( hh:mm:ss )";
+                textBox2.Visible = true;
+                textBox3.Visible = true;
+                textBox4.Visible = true;
+                textBox5.Visible = true;
+                textBox2.Text = s.ArtistName;
+                textBox3.Text = s.MusicType;
+                textBox4.Text = s.Language;
+                textBox5.Text = s.PublishYear;
+                pictureBox1.Image = s.Image;
+                axWindowsMediaPlayer1.URL = s.Path;
+                panel1.Location = new Point(3, 3);
+                panel1.Size = new Size(this.Width - 6, this.Height - 62);
+                button3.Visible = false;
+                textBox1.Visible = false;
+                button1.Enabled = true;
+                button1.Text = "Edit";
+                button4.Enabled = true;
+            }
             panel1.BackColor = Color.LightSteelBlue;
             button1.Location = new Point(this.Width / 2 + 60, this.Height - 60);
             button2.Location = new Point(this.Width / 2 - 120, this.Height - 60);
@@ -138,30 +181,33 @@ namespace MusicPlaylist
                 list = new List<Song>();
             }
             f.Close();
-            foreach (Song s in list)
+            if (adding)
             {
-                if (s.SongName == name)
+                foreach (Song s in list)
                 {
-                    DialogResult res = MessageBox.Show("Song with this name already exists !\nDo you want to change the name of this song ?", "Error", MessageBoxButtons.YesNo);
-                    if (res == DialogResult.Yes)
+                    if (s.SongName == name)
                     {
-                        InputPopUp inp = new InputPopUp("Give the new Name of the song");
-                        inp.ShowDialog();
-                        if (inp.change)
+                        DialogResult res = MessageBox.Show("Song with this name already exists !\nDo you want to change the name of this song ?", "Error", MessageBoxButtons.YesNo);
+                        if (res == DialogResult.Yes)
                         {
-                            b = true;
-                            name = inp.name;
-                            button1_Click(sender, e);
+                            InputPopUp inp = new InputPopUp("Give the new Name of the song");
+                            inp.ShowDialog();
+                            if (inp.change)
+                            {
+                                b = true;
+                                name = inp.name;
+                                button1_Click(sender, e);
+                            }
                         }
-                    }
-                    else if (res == DialogResult.No)
-                    {
-                        b = false;
-                        break;
+                        else if (res == DialogResult.No)
+                        {
+                            b = false;
+                            break;
+                        }
                     }
                 }
             }
-            if (b)
+            if (b && adding)
             {
                 newSong.Path = textBox1.Text;
                 newSong.SongName = name;
@@ -178,6 +224,24 @@ namespace MusicPlaylist
                 f1.Close();
                 MessageBox.Show("Song successfully added");
                 this.Close();
+            }
+            else if (!adding)
+            {
+                if (list.Count() != 0)
+                {
+                    list[selectedIndex].ArtistName = textBox2.Text;
+                    list[selectedIndex].MusicType = textBox3.Text;
+                    list[selectedIndex].Language = textBox4.Text;
+                    list[selectedIndex].PublishYear = textBox5.Text;
+                    list[selectedIndex].Image = pictureBox1.Image;
+                    BinaryFormatter bf1 = new BinaryFormatter();
+                    FileStream f1 = new FileStream("Files/Songs/songs.dat", FileMode.Create);
+                    bf1.Serialize(f1, list);
+                    f1.Close();
+                    MessageBox.Show("Song successfully added");
+                    this.Close();
+                }
+                else MessageBox.Show("Oops , something happened and we couldn't edit the song");
             }
         }
 
