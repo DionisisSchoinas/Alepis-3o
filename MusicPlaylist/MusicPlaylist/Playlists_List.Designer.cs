@@ -1,6 +1,6 @@
 ﻿namespace MusicPlaylist
 {
-    partial class PlayList
+    partial class Playlists_List
     {
         /// <summary>
         /// Required designer variable.
@@ -33,21 +33,21 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(76, 43);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(82, 70);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(304, 139);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
-            // PlayList
+            // Playlists_List
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(486, 280);
+            this.ClientSize = new System.Drawing.Size(426, 282);
             this.Controls.Add(this.flowLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "PlayList";
-            this.Text = "PlayList";
-            this.Load += new System.EventHandler(this.PlayList_Load);
+            this.Name = "Playlists_List";
+            this.Text = "Playlists_List";
+            this.Load += new System.EventHandler(this.Playlists_List_Load);
             this.ResumeLayout(false);
 
         }
