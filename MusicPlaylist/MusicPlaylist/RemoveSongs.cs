@@ -18,9 +18,9 @@ namespace MusicPlaylist
         List<Panel> songPanels;
         public List<int> indexList;
         AddPanels ap;
-        bool del;
+        int del;
 
-        public RemoveSongs(bool x) //if x = true then we remove songs  else creating playlist
+        public RemoveSongs(int x) //if x = 0 then we remove songs  x = 1 creating playlist  x = 2 remove playlist
         {
             InitializeComponent();
             indexList = new List<int>();
@@ -28,6 +28,10 @@ namespace MusicPlaylist
             songPanels = new List<Panel>();
             ap = new AddPanels();
             del = x;
+            if (del != 0 && del != 1 && del != 2)
+            {
+                this.Close();
+            }
         }
 
         private void Remove(object sender, EventArgs e)
@@ -50,24 +54,42 @@ namespace MusicPlaylist
         {
             //Create the panels for the songs with the class
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream f = new FileStream("Files/Songs/songs.dat",FileMode.OpenOrCreate);
-            try
+            if (del == 2)
             {
-                songList = (List<Song>)bf.Deserialize(f);
+                FileStream f = new FileStream("Files/Playlists/playlists.dat", FileMode.OpenOrCreate);
+                try
+                {
+                    songList = (List<Song>)bf.Deserialize(f);
+                }
+                catch
+                {
+                    songList = new List<Song>();
+                }
+                f.Close();
+                ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, true, new List<Song>(), false, songList);
+
             }
-            catch
+            else
             {
-                songList = new List<Song>();
+                FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
+                try
+                {
+                    songList = (List<Song>)bf.Deserialize(f);
+                }
+                catch
+                {
+                    songList = new List<Song>();
+                }
+                f.Close();
+                ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, true, new List<Song>(), true, songList);
             }
-            f.Close();
-            ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, true, new List<Song>(), true, songList);
 
             Button remove = new Button();
             remove.Location = new Point(this.Width / 2 + 30, this.Height - 60);
             remove.Size = new Size(60, 60);
             remove.Click += new EventHandler(Remove);
-            if (del) remove.Text = "Remove";
-            else remove.Text = "Create";
+            if (del == 1) remove.Text = "Create";
+            else remove.Text = "Remove";
             remove.BackColor = Color.LightGreen;
             //play.Image = new Bitmap("");
             this.Controls.Add(remove);

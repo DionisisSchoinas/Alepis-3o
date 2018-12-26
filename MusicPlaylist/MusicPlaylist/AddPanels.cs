@@ -157,6 +157,7 @@ namespace MusicPlaylist
                             {
                                 songL = "0";
                             }
+                            f.Close();
                         }
                         lab3.Text = "Length :  " + songL;
                         lab3.Location = new Point(pic.Size.Width + 7, lab1.Location.Y * 12);
@@ -200,10 +201,11 @@ namespace MusicPlaylist
                         p.Controls.Add(lab1);
                         lab3.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
                         lab3.DoubleClick += new EventHandler(DoubleClick);
-                        tool3.SetToolTip(lab3, lab3.Text + " ( hh:mm:ss )");
+                        tool3.SetToolTip(lab3, lab3.Text);
                         p.Controls.Add(lab3);
                         if (justSongs)
                         {
+                            tool3.SetToolTip(lab3, lab3.Text + " ( hh:mm:ss )");
                             lab2.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
                             lab2.DoubleClick += new EventHandler(DoubleClick);
                             tool2.SetToolTip(lab2, lab2.Text);

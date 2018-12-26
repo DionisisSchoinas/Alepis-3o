@@ -47,19 +47,19 @@ namespace MusicPlaylist
 
         private void Create(object sender, EventArgs e)
         {
-            PlayList add = new PlayList();
+            PlayList add = new PlayList(this);
             add.StartPosition = FormStartPosition.Manual;
             add.Location = new Point(this.Location.X, this.Location.Y);
             add.Size = this.Size;
             add.ShowDialog();
-            PlayList_Load(sender, e);
+            Playlists_List_Load(sender, e);
         }
-        
-        private void PlayList_Load(object sender, EventArgs e)
+
+        private void Playlists_List_Load(object sender, EventArgs e)
         {
             //Create the panels for the songs with the class
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream f = new FileStream("Files/Playlists/playlists.dat",FileMode.OpenOrCreate);
+            FileStream f = new FileStream("Files/Playlists/playlists.dat", FileMode.OpenOrCreate);
             try
             {
                 playlist = (List<Song>)bf.Deserialize(f);
@@ -69,7 +69,6 @@ namespace MusicPlaylist
                 playlist = new List<Song>();
             }
             f.Close();
-            MessageBox.Show(playlist.Count().ToString());
             ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, false, new List<Song>(), false, playlist);
 
             Button select = new Button();

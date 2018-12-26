@@ -20,6 +20,7 @@ namespace MusicPlaylist
         ToolTip tool1, tool2, tool3, tool4;
         List<Song> playList;
         int playListIndex, currentLength, counter;
+        BinaryFormatter bf;
 
         public Form1()
         {
@@ -29,6 +30,7 @@ namespace MusicPlaylist
             playListIndex = -1;
             currentLength = -1;
             counter = 0;
+            bf = new BinaryFormatter();
         }
         
         private void SetTrackbarToolTip(object sender)
@@ -60,12 +62,15 @@ namespace MusicPlaylist
             tool4.InitialDelay = 700;
             tool4.ReshowDelay = 10;
             playListIndex = -1;
+            button1.BackgroundImage = new Bitmap("Files/Pictures/Play.png");
+            button2.BackgroundImage = new Bitmap("Files/Pictures/Next.png");
+            button3.BackgroundImage = new Bitmap("Files/Pictures/Previous.png");
         }
 
         private void LoadSong(Song s)
         {
             bool loaded = true;
-            button1.Text = "Pause";
+            button1.BackgroundImage = new Bitmap("Files/Pictures/Pause.png");
             pictureBox1.Image = s.Image;
             label5.Text = "Song : " + s.SongName;
             label6.Text = "Type : " + s.MusicType;
@@ -87,8 +92,6 @@ namespace MusicPlaylist
             if (loaded)
             {
                 button1.Enabled = true;
-                button2.Enabled = true;
-                button3.Enabled = true;
                 button4.Enabled = true;
                 button5.Enabled = true;
                 axWindowsMediaPlayer1.Ctlcontrols.play();
@@ -101,6 +104,16 @@ namespace MusicPlaylist
 
         private void LoadPlayList(List<Song> list)
         {
+            button2.Enabled = true;
+            button3.Enabled = true;
+            if (playListIndex == 0)
+            {
+                button3.Enabled = false;
+            }
+            if (playListIndex == list.Count() - 1)
+            {
+                button2.Enabled = false;
+            }
             if (playListIndex < list.Count())
             {
                 currentLength = list[playListIndex].SongLength;
@@ -141,14 +154,20 @@ namespace MusicPlaylist
             {
                 axWindowsMediaPlayer1.Ctlcontrols.pause();
                 timer1.Stop();
-                button1.Text = "Play";
+                button1.BackgroundImage = new Bitmap("Files/Pictures/Play.png");
             }
-            else if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused || axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsStopped)
+            else if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused)
+            {
+                axWindowsMediaPlayer1.Ctlcontrols.play();
+                timer1.Start();
+                button1.BackgroundImage = new Bitmap("Files/Pictures/Pause.png");
+            }
+            else if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsStopped)
             {
                 axWindowsMediaPlayer1.Ctlcontrols.play();
                 timer1.Start();
                 trackBar1.Value = 0;
-                button1.Text = "Pause";
+                button1.BackgroundImage = new Bitmap("Files/Pictures/Pause.png");
             }
         }
 
@@ -158,7 +177,7 @@ namespace MusicPlaylist
             {
                 axWindowsMediaPlayer1.Ctlcontrols.stop();
                 timer1.Stop();
-                button1.Text = "Play";
+                button1.BackgroundImage = new Bitmap("Files/Pictures/Play.png");
             }
         }
 
@@ -172,49 +191,122 @@ namespace MusicPlaylist
 
         private void button9_Click(object sender, EventArgs e)
         {
-            RemoveSongs removeSongs = new RemoveSongs(true);
-            removeSongs.StartPosition = FormStartPosition.Manual;
-            removeSongs.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
-            removeSongs.Size = panel2.Size;
-            removeSongs.ShowDialog();
-            List<int> indexList = removeSongs.indexList;
-            if (indexList.Count() != 0)
+            RemoveSettings rmSettings = new RemoveSettings();
+            rmSettings.StartPosition = FormStartPosition.Manual;
+            rmSettings.BackColor = Color.LightBlue;
+            rmSettings.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + button9.Location.Y + 32 - button9.Height - 20);
+            rmSettings.Size = new Size(button9.Width + 20, button9.Height * 3 + 40);
+            rmSettings.ShowDialog();
+            int choice = rmSettings.choice;
+            if (choice == 1)
             {
-                List<Song> tmpSongs = new List<Song>();
-                BinaryFormatter bf = new BinaryFormatter();
-                FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
-                try
+                RemoveSongs removeSongs = new RemoveSongs(0);
+                removeSongs.StartPosition = FormStartPosition.Manual;
+                removeSongs.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
+                removeSongs.Size = panel2.Size;
+                removeSongs.ShowDialog();
+                List<int> indexList = removeSongs.indexList;
+                if (indexList.Count() != 0)
                 {
-                    tmpSongs = (List<Song>)bf.Deserialize(f);
-                    f.Close();
-                    indexList.Sort();  //Sort in ascending order
-                    indexList.Reverse();  //Reverse so it is in descending order so we delete the songs from the end of the list towards the start
-                    foreach(int i in indexList)
+                    List<Song> tmpSongs = new List<Song>();
+                    FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
+                    try
                     {
-                        if (tmpSongs[i].Path == axWindowsMediaPlayer1.URL)
+                        tmpSongs = (List<Song>)bf.Deserialize(f);
+                        f.Close();
+                        indexList.Sort();  //Sort in ascending order
+                        indexList.Reverse();  //Reverse so it is in descending order so we delete the songs from the end of the list towards the start
+                        foreach (int i in indexList)
                         {
-                            button1.Enabled = false;
-                            button2.Enabled = false;
-                            button3.Enabled = false;
-                            button4.Enabled = false;
-                            button5.Enabled = false;
-                            axWindowsMediaPlayer1.Ctlcontrols.stop();
-                            timer1.Stop();
-                            trackBar1.Value = 0;
-                            axWindowsMediaPlayer1.URL = "";
+                            if (tmpSongs[i].Path == axWindowsMediaPlayer1.URL)
+                            {
+                                button1.Enabled = false;
+                                button2.Enabled = false;
+                                button3.Enabled = false;
+                                button4.Enabled = false;
+                                button5.Enabled = false;
+                                axWindowsMediaPlayer1.Ctlcontrols.stop();
+                                timer1.Stop();
+                                trackBar1.Value = 0;
+                                axWindowsMediaPlayer1.URL = "";
+                                panel5.Visible = false;
+                            }
+                            tmpSongs.RemoveAt(i);
                         }
-                        tmpSongs.RemoveAt(i);
+                        FileStream f1 = new FileStream("Files/Songs/songs.dat", FileMode.Create);
+                        bf.Serialize(f1, tmpSongs);
+                        f1.Close();
                     }
-                    FileStream f1 = new FileStream("Files/Songs/songs.dat", FileMode.Create);
-                    bf.Serialize(f1, tmpSongs);
-                    f1.Close();
-                }
-                catch
-                {
-                    MessageBox.Show("Oops , something happened and we couldn't delete the files");
-                    f.Close();
+                    catch
+                    {
+                        MessageBox.Show("Oops , something happened and we couldn't delete the files");
+                        f.Close();
+                    }
                 }
             }
+            else if (choice == 2)
+            {
+                RemoveSongs removeSongs = new RemoveSongs(2);
+                removeSongs.StartPosition = FormStartPosition.Manual;
+                removeSongs.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
+                removeSongs.Size = panel2.Size;
+                removeSongs.ShowDialog();
+                List<int> indexList = removeSongs.indexList;
+                if (indexList.Count() != 0)
+                {
+                    List<Song> tmpLists = new List<Song>();
+                    FileStream f = new FileStream("Files/Playlists/playlists.dat", FileMode.OpenOrCreate);
+                    try
+                    {
+                        tmpLists = (List<Song>)bf.Deserialize(f);
+                        f.Close();
+                        indexList.Sort();  //Sort in ascending order
+                        indexList.Reverse();  //Reverse so it is in descending order so we delete the songs from the end of the list towards the start
+                        foreach (int i in indexList)
+                        {
+                            FileStream f2 = new FileStream(tmpLists[i].Path, FileMode.OpenOrCreate);
+                            List<Song> t;
+                            try
+                            {
+                                t = (List<Song>)bf.Deserialize(f2);
+                            }
+                            catch
+                            {
+                                t = new List<Song>();
+                            }
+                            f2.Close();
+                            foreach(Song song in t)
+                            {
+                                if (song.Path == axWindowsMediaPlayer1.URL)
+                                {
+                                    button1.Enabled = false;
+                                    button2.Enabled = false;
+                                    button3.Enabled = false;
+                                    button4.Enabled = false;
+                                    button5.Enabled = false;
+                                    axWindowsMediaPlayer1.Ctlcontrols.stop();
+                                    timer1.Stop();
+                                    trackBar1.Value = 0;
+                                    axWindowsMediaPlayer1.URL = "";
+                                    panel5.Visible = false;
+                                }
+                            }
+                            string path = tmpLists[i].Path;
+                            File.Delete(path);
+                            tmpLists.RemoveAt(i);
+                        }
+                        FileStream f1 = new FileStream("Files/Playlists/playlists.dat", FileMode.Create);
+                        bf.Serialize(f1, tmpLists);
+                        f1.Close();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Oops , something happened and we couldn't delete the files");
+                        f.Close();
+                    }
+                }
+            }
+            
         }
 
         private void trackBarUpdate_Tick(object sender, EventArgs e)
@@ -227,22 +319,45 @@ namespace MusicPlaylist
 
         private void button2_Click(object sender, EventArgs e)
         {
-            timer2.Stop();
-            playListIndex++;
-            LoadPlayList(playList);
+            if (playListIndex <= playList.Count() - 1)
+            {
+                timer2.Stop();
+                playListIndex++;
+                LoadPlayList(playList);
+            }
+            else
+            {
+                timer2.Stop();
+                button2.Enabled = false;
+                playListIndex = -1;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (playListIndex > 0)
+            {
+                timer2.Stop();
+                playListIndex--;
+                LoadPlayList(playList);
+            }
+            else
+            {
+                timer2.Stop();
+                button3.Enabled = false;
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            Playlists_List playlist = new Playlists_List();
-            playlist.StartPosition = FormStartPosition.Manual;
-            playlist.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
-            playlist.Size = panel2.Size;
-            playlist.ShowDialog();
-            int ind = playlist.Index;
+            Playlists_List playl = new Playlists_List();
+            playl.StartPosition = FormStartPosition.Manual;
+            playl.Location = new Point(this.Location.X + panel2.Location.X, this.Location.Y + panel2.Location.Y + 32);
+            playl.Size = panel2.Size;
+            playl.ShowDialog();
+            int ind = playl.Index;
             if (ind != -1)
             {
-                BinaryFormatter bf = new BinaryFormatter();
                 FileStream f = new FileStream("Files/Playlists/playlists.dat", FileMode.OpenOrCreate);
                 List<Song> list;
                 try
@@ -256,17 +371,17 @@ namespace MusicPlaylist
                 f.Close();
                 List<Song> listSongs;
                 string path = list[ind].Path;
-                MessageBox.Show(path);
                 FileStream f1 = new FileStream(path, FileMode.OpenOrCreate);
                 try
                 {
                     listSongs = (List<Song>)bf.Deserialize(f1);
                 }
-                catch
+                catch (Exception ex)
                 {
                     listSongs = new List<Song>();
                 }
                 f1.Close();
+                axWindowsMediaPlayer1.Ctlcontrols.stop();
                 playList = listSongs;
                 playListIndex = 0;
                 LoadPlayList(playList);
@@ -332,6 +447,10 @@ namespace MusicPlaylist
                     songs = new List<Song>();
                 }
                 f.Close();
+                FileStream f1 = new FileStream("Files/Songs/songs.dat", FileMode.Create);
+                songs[Index].TimesPlayed++;
+                bf.Serialize(f1, songs);
+                f1.Close();
                 Song s = new Song();
                 s = songs[Index];
                 LoadSong(s);

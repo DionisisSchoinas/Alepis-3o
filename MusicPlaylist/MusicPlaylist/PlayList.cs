@@ -19,8 +19,9 @@ namespace MusicPlaylist
         List<Panel> songPanels;
         AddPanels ap;
         List<int> indexList;
+        Playlists_List caller;
 
-        public PlayList()
+        public PlayList(Playlists_List x)
         {
             InitializeComponent();
             playlist = new List<Song>();
@@ -38,6 +39,7 @@ namespace MusicPlaylist
                 songList = new List<Song>();
             }
             f.Close();
+            caller = x;
         }
 
         private void Exit(object sender, EventArgs e)
@@ -74,7 +76,7 @@ namespace MusicPlaylist
                     {
                         if (name == s.SongName)
                         {
-                            MessageBox.Show("Name alreay exists");
+                            MessageBox.Show("Name already exists");
                             t = false;
                             break;
                         }
@@ -86,18 +88,19 @@ namespace MusicPlaylist
                         {
                             playlist.Add(songList[i]);
                         }
+                        BinaryFormatter bf1 = new BinaryFormatter();
                         FileStream f1 = new FileStream("Files/Playlists/" + name + ".dat", FileMode.Create);
-                        bf.Serialize(f1,playlist);
+                        bf1.Serialize(f1, playlist);
                         f1.Close();
                         Song nL = new Song();
                         nL.Path = "Files/Playlists/" + name + ".dat";
                         nL.SongName = name;
                         nL.Image = new Bitmap("Files/Pictures/Default_Playlist.png");
-                        FileStream f2 = new FileStream("Files/Playlists/playlists.dat", FileMode.OpenOrCreate);
                         List<Song> tmpList;
+                        FileStream f2 = new FileStream("Files/Playlists/playlists.dat", FileMode.OpenOrCreate);
                         try
                         {
-                            tmpList = (List<Song>)bf.Deserialize(f2);
+                            tmpList = (List<Song>)bf1.Deserialize(f2);
                         }
                         catch
                         {
@@ -106,7 +109,7 @@ namespace MusicPlaylist
                         f2.Close();
                         tmpList.Add(nL);
                         FileStream f3 = new FileStream("Files/Playlists/playlists.dat", FileMode.Create);
-                        bf.Serialize(f3, tmpList);
+                        bf1.Serialize(f3, tmpList);
                         f3.Close();
                         this.Close();
                     }
@@ -125,15 +128,17 @@ namespace MusicPlaylist
             {
                 tmp = (List<Song>)bf.Deserialize(f);
                 f.Close();
-                Playlists_List t = new Playlists_List();
-                FileStream f1 = new FileStream(tmp[t.Index].Path, FileMode.OpenOrCreate);
+                FileStream f1 = new FileStream(tmp[caller.Index].Path, FileMode.OpenOrCreate);
                 playlist = (List<Song>)bf.Deserialize(f1);
                 f1.Close();
             }
             catch
             {
-                f.Close();
                 playlist = new List<Song>();
+            }
+            finally
+            {
+                f.Close();
             }
             ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, true, playlist, true, songList);
             

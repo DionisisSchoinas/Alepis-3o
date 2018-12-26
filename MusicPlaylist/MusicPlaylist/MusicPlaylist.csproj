@@ -85,6 +85,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoveSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RemoveSettings.Designer.cs">
+      <DependentUpon>RemoveSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="RemoveSongs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +125,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RemoveSettings.resx">
+      <DependentUpon>RemoveSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RemoveSongs.resx">
       <DependentUpon>RemoveSongs.cs</DependentUpon>
     </EmbeddedResource>

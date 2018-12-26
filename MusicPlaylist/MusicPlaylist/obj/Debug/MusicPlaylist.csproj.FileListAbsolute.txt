@@ -19,3 +19,4 @@ J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlayli
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.RemoveSongs.resources
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.PlayList.resources
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.Playlists_List.resources
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MusicPlaylist\MusicPlaylist\obj\Debug\MusicPlaylist.RemoveSettings.resources

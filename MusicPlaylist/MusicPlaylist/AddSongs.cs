@@ -206,7 +206,7 @@ namespace MusicPlaylist
             if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
             {
                 axWindowsMediaPlayer1.Ctlcontrols.pause();
-                button4.Text = "Play";
+                button4.Text = "Sample";
             }
             else if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused || axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsStopped)
             {
