@@ -20,14 +20,16 @@ namespace MusicPlaylist
         public int Index { get { return index; } set { index = value; } }
         AddPanels ap;
         int indexSelected { get; set; }
+        bool all;
 
-        public Allsongs()
+        public Allsongs(bool x)  //x = true  display all songs    x = false  display the top 10 
         {
             InitializeComponent();
             ap = new AddPanels();
             songList = new List<Song>();
             songPanels = new List<Panel>();
             Index = -1;
+            all = x;
         }
         
         public void Play(object sender, EventArgs e)
@@ -75,8 +77,23 @@ namespace MusicPlaylist
                 songList = new List<Song>();
             }
             f.Close();
-            ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, false, new List<Song>(), true, songList);
-            
+            if (all)
+            {
+                ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, false, new List<Song>(), true, songList);
+            }
+            else
+            {
+                songList = songList.OrderBy(d => d.TimesPlayed).ToList();
+                List<Song> reversed = new List<Song>();
+                int min = 10;
+                if (songList.Count - 1 >= 10) min = songList.Count - 1;
+                for (int i = songList.Count() - 1; i >= min - 10; i--)
+                {
+                    reversed.Add(songList[i]);
+                }
+                ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, false, new List<Song>(), true, reversed);
+            }
+
             Button play = new Button();
             play.Location = new Point(this.Width / 2 + 60, this.Height - 60);
             play.Size = new Size(60, 60);

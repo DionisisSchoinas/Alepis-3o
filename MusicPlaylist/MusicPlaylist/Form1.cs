@@ -16,10 +16,10 @@ namespace MusicPlaylist
     {
         int index;
         int Index { get { return index; } set { index = value; } }
-        bool opened, changingValue, repeat, soloSong;
+        bool opened, changingValue, repeat, soloSong, calledFromBar;
         ToolTip tool1, tool2, tool3, tool4;
         List<Song> playList;
-        int playListIndex, currentLength, counter, counterSolo;
+        int playListIndex, currentLength, counter, counterSolo, choice;
         BinaryFormatter bf;
         Song currentSong;
 
@@ -36,6 +36,9 @@ namespace MusicPlaylist
             button1.ForeColor = this.BackColor;
             soloSong = true;
             counterSolo = 0;
+            trackBar1.Enabled = false;
+            calledFromBar = false;
+            choice = -1;
         }
         
         private void SetTrackbarToolTip(object sender)
@@ -67,6 +70,7 @@ namespace MusicPlaylist
             tool4.InitialDelay = 700;
             tool4.ReshowDelay = 10;
             playListIndex = -1;
+            panel1.Visible = false;
             button1.BackgroundImage = new Bitmap("Files/Pictures/Play.png");
             button2.BackgroundImage = new Bitmap("Files/Pictures/Next.png");
             button3.BackgroundImage = new Bitmap("Files/Pictures/Previous.png");
@@ -85,7 +89,6 @@ namespace MusicPlaylist
             }
             f.Close();
 
-            top10 = top10.OrderBy(d => d.TimesPlayed).ToList();
             //top10 = top10.Reverse();
             
             AddPanels ap = new AddPanels();
@@ -95,6 +98,7 @@ namespace MusicPlaylist
 
         private void LoadSong(Song s)
         {
+            trackBar1.Enabled = true;
             bool loaded = true;
             currentSong = s;
             counterSolo = 0;
@@ -106,6 +110,17 @@ namespace MusicPlaylist
             label7.Text = "Length :  " + len;
             trackBar1.Maximum = s.SongLength;
             trackBar1.Value = 0;
+
+            label1.Text = "Name : " + s.SongName;
+            label2.Text = "Length :  " + len + " ( hh:mm:ss )";
+            label3.Text = "Artist : " + s.ArtistName;
+            label10.Text = "Music type : " + s.MusicType;
+            label4.Text = "Times played : " + s.TimesPlayed.ToString();
+            label8.Text = "Language : " + s.Language;
+            label9.Text = "Publish year : " + s.PublishYear;
+            pictureBox2.Image = s.Image;
+            panel1.Visible = true;
+
             try
             {
                 axWindowsMediaPlayer1.URL = s.Path;
@@ -203,17 +218,8 @@ namespace MusicPlaylist
                 axWindowsMediaPlayer1.Ctlcontrols.play();
                 timer1.Start();
                 trackBar1.Value = 0;
+                trackBar1.Enabled = true;
                 button1.BackgroundImage = new Bitmap("Files/Pictures/Pause.png");
-            }
-        }
-
-        private void axWindowsMediaPlayer1_OpenStateChange(object sender, AxWMPLib._WMPOCXEvents_OpenStateChangeEvent e)
-        {
-            if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsMediaEnded)
-            {
-                axWindowsMediaPlayer1.Ctlcontrols.stop();
-                timer1.Stop();
-                button1.BackgroundImage = new Bitmap("Files/Pictures/Play.png");
             }
         }
 
@@ -227,19 +233,23 @@ namespace MusicPlaylist
 
         private void button9_Click(object sender, EventArgs e)
         {
-            RemoveSettings rmSettings = new RemoveSettings();
-            rmSettings.StartPosition = FormStartPosition.Manual;
-            rmSettings.BackColor = Color.LightBlue;
-            rmSettings.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + button9.Location.Y + 32 - button9.Height - 20);
-            rmSettings.Size = new Size(button9.Width + 20, button9.Height * 3 + 40);
-            rmSettings.ShowDialog();
-            int choice = rmSettings.choice;
+            if (!calledFromBar)
+            {
+                RemoveSettings rmSettings = new RemoveSettings();
+                rmSettings.StartPosition = FormStartPosition.Manual;
+                rmSettings.BackColor = Color.LightBlue;
+                rmSettings.Location = new Point(this.Location.X + panel1.Location.X, this.Location.Y + button9.Location.Y + 32 - button9.Height - 20);
+                rmSettings.Size = new Size(button9.Width + 20, button9.Height * 3 + 40);
+                rmSettings.ShowDialog();
+                choice = rmSettings.choice;
+            }
             if (choice == 1)
             {
+                calledFromBar = false;
                 RemoveSongs removeSongs = new RemoveSongs(0);
                 removeSongs.StartPosition = FormStartPosition.Manual;
-                removeSongs.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
-                removeSongs.Size = flowLayoutPanel1.Size;
+                removeSongs.Location = new Point(this.Location.X + panel1.Location.X, this.Location.Y + panel1.Location.Y + 32);
+                removeSongs.Size = panel1.Size;
                 removeSongs.ShowDialog();
                 List<int> indexList = removeSongs.indexList;
                 if (indexList.Count() != 0)
@@ -282,10 +292,11 @@ namespace MusicPlaylist
             }
             else if (choice == 2)
             {
+                calledFromBar = false;
                 RemoveSongs removeSongs = new RemoveSongs(2);
                 removeSongs.StartPosition = FormStartPosition.Manual;
-                removeSongs.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
-                removeSongs.Size = flowLayoutPanel1.Size;
+                removeSongs.Location = new Point(this.Location.X + panel1.Location.X, this.Location.Y + panel1.Location.Y + 32);
+                removeSongs.Size = panel1.Size;
                 removeSongs.ShowDialog();
                 List<int> indexList = removeSongs.indexList;
                 if (indexList.Count() != 0)
@@ -394,12 +405,119 @@ namespace MusicPlaylist
             }
         }
 
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Allsongs allSongs = new Allsongs(false);
+            opened = true;
+            allSongs.StartPosition = FormStartPosition.Manual;
+            allSongs.Location = new Point(this.Location.X + panel1.Location.X, this.Location.Y + panel1.Location.Y + 32);
+            allSongs.Size = panel1.Size;
+            allSongs.ShowDialog();
+            Index = allSongs.Index;
+            if (Index != -1)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
+                List<Song> songs;
+                try
+                {
+                    songs = (List<Song>)bf.Deserialize(f);
+                }
+                catch
+                {
+                    songs = new List<Song>();
+                }
+                f.Close();
+                FileStream f1 = new FileStream("Files/Songs/songs.dat", FileMode.Create);
+                songs[Index].TimesPlayed++;
+                bf.Serialize(f1, songs);
+                f1.Close();
+                Song s = new Song();
+                s = songs[Index];
+                LoadSong(s);
+            }
+        }
+
+        private void showAllSongsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void showAllSongsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            button6_Click(sender, e);
+        }
+
+        private void showTop10SongsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button10_Click(sender, e);
+        }
+
+        private void showPlaylistToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button7_Click(sender, e);
+        }
+
+        private void addASongToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button8_Click(sender, e);
+        }
+
+        private void showPlaylistsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button1_Click(sender, e);
+        }
+
+        private void nextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button2_Click(sender, e);
+        }
+
+        private void previousToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button3_Click(sender, e);
+        }
+
+        private void songsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            choice = 1;
+            calledFromBar = true;
+            button9_Click(sender, e);
+        }
+
+        private void playlistToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            choice = 2;
+            calledFromBar = true;
+            button9_Click(sender, e);
+        }
+
+        private void loopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button4_Click(sender, e);
+        }
+
+        private void shuffleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button5_Click(sender, e);
+        }
+
         private void timer3_Tick(object sender, EventArgs e)
         {
             if (counterSolo == currentSong.SongLength + 2)
             {
                 counterSolo = 0;
                 timer3.Stop();
+                axWindowsMediaPlayer1.Ctlcontrols.stop();
+                timer1.Stop();
+                trackBar1.Value = 0;
+                trackBar1.Enabled = false;
+                button1.BackgroundImage = new Bitmap("Files/Pictures/Play.png");
                 if (repeat)
                 {
                     LoadSong(currentSong);
@@ -423,6 +541,7 @@ namespace MusicPlaylist
             {
                 list = new List<Song>();
             }
+            f.Close();
             if (list.Count() != 0)
             {
                 Random r = new Random();
@@ -450,8 +569,8 @@ namespace MusicPlaylist
         {
             Playlists_List playl = new Playlists_List();
             playl.StartPosition = FormStartPosition.Manual;
-            playl.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
-            playl.Size = flowLayoutPanel1.Size;
+            playl.Location = new Point(this.Location.X + panel1.Location.X, this.Location.Y + panel1.Location.Y + 32);
+            playl.Size = panel1.Size;
             playl.ShowDialog();
             int ind = playl.Index;
             if (ind != -1)
@@ -514,14 +633,14 @@ namespace MusicPlaylist
         {
             AddSongs addSongs = new AddSongs(true, -1);
             addSongs.StartPosition = FormStartPosition.Manual;
-            addSongs.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
-            addSongs.Size = flowLayoutPanel1.Size;
+            addSongs.Location = new Point(this.Location.X + panel1.Location.X, this.Location.Y + panel1.Location.Y + 32);
+            addSongs.Size = panel1.Size;
             addSongs.ShowDialog();
         }
         
         private void Form1_Activated(object sender, EventArgs e)
         {
-            Allsongs allSongs = new Allsongs();
+            Allsongs allSongs = new Allsongs(true);
             if (opened)
             {
                 opened = false;
@@ -531,11 +650,11 @@ namespace MusicPlaylist
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Allsongs allSongs = new Allsongs();
+            Allsongs allSongs = new Allsongs(true);
             opened = true;
             allSongs.StartPosition = FormStartPosition.Manual;
-            allSongs.Location = new Point(this.Location.X + flowLayoutPanel1.Location.X, this.Location.Y + flowLayoutPanel1.Location.Y + 32);
-            allSongs.Size = flowLayoutPanel1.Size;
+            allSongs.Location = new Point(this.Location.X + panel1.Location.X, this.Location.Y + panel1.Location.Y + 32);
+            allSongs.Size = panel1.Size;
             allSongs.ShowDialog();
             Index = allSongs.Index;
             if (Index != -1)

@@ -20,7 +20,7 @@ namespace MusicPlaylist
         AddPanels ap;
         int del;
 
-        public RemoveSongs(int x) //if x = 0 then we remove songs  x = 1 creating playlist  x = 2 remove playlist
+        public RemoveSongs(int x) //if x = 0 then remove songs  x = 1 creating playlist  x = 2 remove playlist
         {
             InitializeComponent();
             indexList = new List<int>();
