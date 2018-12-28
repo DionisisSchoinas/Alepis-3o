@@ -1,0 +1,11 @@
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\bin\Debug\MemoryGame.exe.config
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\bin\Debug\MemoryGame.exe
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\bin\Debug\MemoryGame.pdb
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\obj\Debug\MemoryGame.csprojAssemblyReference.cache
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\obj\Debug\MemoryGame.Form1.resources
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\obj\Debug\MemoryGame.GameStarted.resources
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\obj\Debug\MemoryGame.Properties.Resources.resources
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\obj\Debug\MemoryGame.csproj.GenerateResource.cache
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\obj\Debug\MemoryGame.csproj.CoreCompileInputs.cache
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\obj\Debug\MemoryGame.exe
+J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\MemoryGame\MemoryGame\obj\Debug\MemoryGame.pdb

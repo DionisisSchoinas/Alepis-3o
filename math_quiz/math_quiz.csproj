@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{BF53ECB2-7BF4-4F52-AE98-18016EC90DA6}</ProjectGuid>
+    <ProjectGuid>{7B851575-61C1-41E9-A349-8523CFE6D1C8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>WindowsApplication</AssemblyName>
@@ -43,6 +43,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".vs\math_quiz\v15\.suo" />
+    <None Include=".vs\math_quiz\v15\Server\sqlite3\db.lock" />
+    <None Include=".vs\math_quiz\v15\Server\sqlite3\storage.ide" />
+    <None Include=".vs\math_quiz\v15\Server\sqlite3\storage.ide-shm" />
+    <None Include=".vs\math_quiz\v15\Server\sqlite3\storage.ide-wal" />
     <None Include="math_quiz\App.config" />
     <None Include="math_quiz\bin\Debug\math_quiz.exe.config" />
     <None Include="math_quiz\obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
