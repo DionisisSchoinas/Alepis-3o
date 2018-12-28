@@ -1,0 +1,12 @@
+c:\users\milos\source\repos\math_quiz\math_quiz\bin\Debug\math_quiz.exe.config
+c:\users\milos\source\repos\math_quiz\math_quiz\bin\Debug\math_quiz.exe
+c:\users\milos\source\repos\math_quiz\math_quiz\bin\Debug\math_quiz.pdb
+c:\users\milos\source\repos\math_quiz\math_quiz\obj\Debug\math_quiz.csprojAssemblyReference.cache
+c:\users\milos\source\repos\math_quiz\math_quiz\obj\Debug\math_quiz.Form1.resources
+c:\users\milos\source\repos\math_quiz\math_quiz\obj\Debug\math_quiz.Form2.resources
+c:\users\milos\source\repos\math_quiz\math_quiz\obj\Debug\math_quiz.Properties.Resources.resources
+c:\users\milos\source\repos\math_quiz\math_quiz\obj\Debug\math_quiz.csproj.GenerateResource.cache
+c:\users\milos\source\repos\math_quiz\math_quiz\obj\Debug\math_quiz.csproj.CoreCompileInputs.cache
+c:\users\milos\source\repos\math_quiz\math_quiz\obj\Debug\math_quiz.exe
+c:\users\milos\source\repos\math_quiz\math_quiz\obj\Debug\math_quiz.pdb
+C:\Users\Milos\source\repos\math_quiz\math_quiz\obj\Debug\math_quiz.Form3.resources
