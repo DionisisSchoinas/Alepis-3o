@@ -129,12 +129,12 @@
             this.numericUpDown1.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numericUpDown1.Location = new System.Drawing.Point(227, 103);
             this.numericUpDown1.Maximum = new decimal(new int[] {
-            10000,
+            250000,
             0,
             0,
             0});
             this.numericUpDown1.Minimum = new decimal(new int[] {
-            10000,
+            499,
             0,
             0,
             -2147483648});
@@ -171,12 +171,12 @@
             this.numericUpDown2.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numericUpDown2.Location = new System.Drawing.Point(227, 143);
             this.numericUpDown2.Maximum = new decimal(new int[] {
-            10000,
+            250000,
             0,
             0,
             0});
             this.numericUpDown2.Minimum = new decimal(new int[] {
-            10000,
+            499,
             0,
             0,
             -2147483648});
@@ -246,12 +246,12 @@
             this.numericUpDown3.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numericUpDown3.Location = new System.Drawing.Point(227, 182);
             this.numericUpDown3.Maximum = new decimal(new int[] {
-            10000,
+            250000,
             0,
             0,
             0});
             this.numericUpDown3.Minimum = new decimal(new int[] {
-            10000,
+            499,
             0,
             0,
             -2147483648});
@@ -321,12 +321,12 @@
             this.numericUpDown4.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numericUpDown4.Location = new System.Drawing.Point(227, 225);
             this.numericUpDown4.Maximum = new decimal(new int[] {
-            10000,
+            250000,
             0,
             0,
             0});
             this.numericUpDown4.Minimum = new decimal(new int[] {
-            10000,
+            499,
             0,
             0,
             -2147483648});
