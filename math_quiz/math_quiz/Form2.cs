@@ -12,6 +12,8 @@ namespace math_quiz
 {
     public partial class Form2 : Form
     {
+        int difficulty_margin;
+        public int score;
         int time_primary;
         char[] symbols = { '+', '-', '/', '*' };
         Random r = new Random();
@@ -80,30 +82,42 @@ namespace math_quiz
             label3.Visible = true;
 
         }
-        public Form2()
+        public Form2(string difficulty)
         {
             InitializeComponent();
+            if(difficulty=="easy")
+            {
+                difficulty_margin = 50;
+            }
+            else if (difficulty == "medium")
+            {
+                difficulty_margin = 100;
+            }
+            else if(difficulty == "hard")
+            {
+                difficulty_margin = 500;
+            }
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
             countdown(); 
             //first line
-            x1.Text = r.Next(0, 100).ToString();
+            x1.Text = r.Next(1, difficulty_margin).ToString();
             symbol1.Text = symbols[r.Next(4)].ToString();
-            y1.Text = r.Next(0, 100).ToString();
+            y1.Text = r.Next(1, difficulty_margin).ToString();
             //second
-            x2.Text = r.Next(0, 100).ToString();
+            x2.Text = r.Next(1, difficulty_margin).ToString();
             symbol2.Text = symbols[r.Next(4)].ToString();
-            y2.Text = r.Next(0, 100).ToString();
+            y2.Text = r.Next(1, difficulty_margin).ToString();
             //third
-            x3.Text = r.Next(0, 100).ToString();
+            x3.Text = r.Next(1, difficulty_margin).ToString();
             symbol3.Text = symbols[r.Next(4)].ToString();
-            y3.Text = r.Next(0, 100).ToString();
+            y3.Text = r.Next(1, difficulty_margin).ToString();
             //forth
-            x4.Text = r.Next(0, 100).ToString();
+            x4.Text = r.Next(1, difficulty_margin).ToString();
             symbol4.Text = symbols[r.Next(4)].ToString();
-            y4.Text = r.Next(0, 100).ToString();
+            y4.Text = r.Next(1, difficulty_margin).ToString();
 
         }
 
@@ -146,6 +160,7 @@ namespace math_quiz
                 mistakes += 1;
             }
             game_over(mistakes,time_primary);
+            score = time_primary * (4 - mistakes);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
