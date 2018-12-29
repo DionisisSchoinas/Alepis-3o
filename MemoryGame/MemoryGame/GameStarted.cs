@@ -66,35 +66,38 @@ namespace MemoryGame
         
         private void Select(object sender, EventArgs e, int i, PictureBox p)
         {
-            if (empty) //If empty
+            if (!usingPanel)
             {
-                Hide(covers[i]);  //Hide clicked panel
-                prevPicture = p;  //Save image
-                prevPanel = covers[i];  //Save panel
-                empty = false;  
-            }
-            else
-            {
-                Hide(covers[i]);  //Hide clicked panel
-                if (prevPicture.Image == p.Image)   //If the saved image matches the clicked one 
+                if (empty) //If empty
                 {
-                    prevPicture = new PictureBox();  //Clear all saved images and panels
-                    prevPanel = new Panel();
-                    cur = new Panel();
-                    empty = true;
-                    allCovers--;  //Remove one from the total covers ( 8 )
+                    Hide(covers[i]);  //Hide clicked panel
+                    prevPicture = p;  //Save image
+                    prevPanel = covers[i];  //Save panel
+                    empty = false;
                 }
                 else
                 {
-                    cur = covers[i];  //Save the panel
-                    timer2.Start();  //Start timer to give delay to the images closing
-                    empty = true;
+                    Hide(covers[i]);  //Hide clicked panel
+                    if (prevPicture.Image == p.Image)   //If the saved image matches the clicked one 
+                    {
+                        prevPicture = new PictureBox();  //Clear all saved images and panels
+                        prevPanel = new Panel();
+                        cur = new Panel();
+                        empty = true;
+                        allCovers--;  //Remove one from the total covers ( 8 )
+                    }
+                    else
+                    {
+                        cur = covers[i];  //Save the panel
+                        timer2.Start();  //Start timer to give delay to the images closing
+                        empty = true;
+                    }
                 }
-            }
-            if (allCovers == 0)
-            {
-                MessageBox.Show("GOOD JOB, YOU DID IT !!!");
-                this.Close();
+                if (allCovers == 0)
+                {
+                    MessageBox.Show("GOOD JOB, YOU DID IT !!!");
+                    this.Close();
+                }
             }
         }
 
