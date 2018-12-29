@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "math_quiz", "math_quiz\math_quiz.csproj", "{D5E39520-FE5B-4F78-A1A3-E64584D7B18B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "math_quiz", "math_quiz\math_quiz.csproj", "{18CD9051-CA35-4269-B8B5-925AE23DC6B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D5E39520-FE5B-4F78-A1A3-E64584D7B18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5E39520-FE5B-4F78-A1A3-E64584D7B18B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5E39520-FE5B-4F78-A1A3-E64584D7B18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5E39520-FE5B-4F78-A1A3-E64584D7B18B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18CD9051-CA35-4269-B8B5-925AE23DC6B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18CD9051-CA35-4269-B8B5-925AE23DC6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18CD9051-CA35-4269-B8B5-925AE23DC6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18CD9051-CA35-4269-B8B5-925AE23DC6B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {DC605066-D433-4A3A-B7DD-A52486770C9F}
+		SolutionGuid = {A2EAC473-D260-4C9C-8B2E-192F0BECD83D}
 	EndGlobalSection
 EndGlobal
