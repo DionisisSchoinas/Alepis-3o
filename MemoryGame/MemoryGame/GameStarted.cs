@@ -19,9 +19,17 @@ namespace MemoryGame
         bool empty, k, usingPanel;
         int allCovers;
 
-        public GameStarted(List<Image> bmp)
+        public bool won = false;
+        int game_time = 60;
+        public int mistakes = 0;
+        
+        public GameStarted(List<Image> bmp,string player_name)
         {
+
             InitializeComponent();
+
+            label5.Text = "PLAYER : " + player_name;
+
             pics = bmp;
             covers = new List<Panel>();
             prevPicture = new PictureBox();
@@ -63,38 +71,57 @@ namespace MemoryGame
             tmpPanel = p;
             timer3.Start();
         }
-        
+
+        private void game_timer_Tick(object sender, EventArgs e)
+        {
+            game_time--;
+            label3.Text = game_time.ToString();
+            if (game_time==0)
+            {
+                game_timer.Stop();
+                MessageBox.Show("TIME IS UP!"+Environment.NewLine+"GAME OVER!");
+                this.Close();
+            }
+        }
+
         private void Select(object sender, EventArgs e, int i, PictureBox p)
         {
-            if (empty) //If empty
+            if (!usingPanel)
             {
-                Hide(covers[i]);  //Hide clicked panel
-                prevPicture = p;  //Save image
-                prevPanel = covers[i];  //Save panel
-                empty = false;  
-            }
-            else
-            {
-                Hide(covers[i]);  //Hide clicked panel
-                if (prevPicture.Image == p.Image)   //If the saved image matches the clicked one 
+                if (empty) //If empty
                 {
-                    prevPicture = new PictureBox();  //Clear all saved images and panels
-                    prevPanel = new Panel();
-                    cur = new Panel();
-                    empty = true;
-                    allCovers--;  //Remove one from the total covers ( 8 )
+                    Hide(covers[i]);  //Hide clicked panel
+                    prevPicture = p;  //Save image
+                    prevPanel = covers[i];  //Save panel
+                    empty = false;
                 }
                 else
                 {
-                    cur = covers[i];  //Save the panel
-                    timer2.Start();  //Start timer to give delay to the images closing
-                    empty = true;
+                    Hide(covers[i]);  //Hide clicked panel
+                    if (prevPicture.Image == p.Image)   //If the saved image matches the clicked one 
+                    {
+                        prevPicture = new PictureBox();  //Clear all saved images and panels
+                        prevPanel = new Panel();
+                        cur = new Panel();
+                        empty = true;
+                        allCovers--;  //Remove one from the total covers ( 8 )
+                    }
+                    else
+                    {
+                        cur = covers[i];  //Save the panel
+                        timer2.Start();  //Start timer to give delay to the images closing
+                        empty = true;
+                        mistakes += 1;
+                        label4.Text = mistakes.ToString();
+                    }
                 }
-            }
-            if (allCovers == 0)
-            {
-                MessageBox.Show("GOOD JOB, YOU DID IT !!!");
-                this.Close();
+                if (allCovers == 0)
+                {
+             
+                    MessageBox.Show("GOOD JOB, YOU DID IT !!!" + Environment.NewLine + "Mistakes : "+mistakes);
+                    won = true;
+                    this.Close();
+                }
             }
         }
 
@@ -135,6 +162,7 @@ namespace MemoryGame
                 this.Controls.Add(covers[i]);
                 covers[i].BringToFront();
             }
+            game_timer.Start();
             timer1.Stop();
         }
 

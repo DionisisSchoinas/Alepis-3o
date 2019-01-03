@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,11 +14,80 @@ namespace MemoryGame
 {
     public partial class Form1 : Form
     {
-        ContextMenu cm1,cm2,cm3,cm4,cm5,cm6,cm7,cm8;
+        ContextMenu cm1, cm2, cm3, cm4, cm5, cm6, cm7, cm8;
+        BinaryFormatter formater = new BinaryFormatter();
+        FileStream fs;
+        List<Player> top10;
         public Form1()
         {
             InitializeComponent();
         }
+        [Serializable]
+        class Player
+        {
+           public string name;
+           public int mistakes;
+           public Player(string n,int m)
+            {
+                name = n;
+                mistakes = m;
+            }
+        }
+
+        void update(List<Player> players)
+        {
+            richTextBox1.Clear();
+            foreach(Player player in players)
+            {
+                richTextBox1.Text += player.name + ':' + player.mistakes + Environment.NewLine;
+            }
+        }
+        
+        List<Player> load()
+        {
+            List<Player> players = new List<Player>();
+            try
+            {
+                fs = new FileStream("highscores.dat", FileMode.Open);
+            }
+            catch (Exception e)
+            {
+                fs = new FileStream("highscores.dat", FileMode.Create);
+                formater.Serialize(fs,  new List<Player>());
+                fs.Close();
+                fs = new FileStream("highscores.dat", FileMode.Open);
+            }
+
+            try
+            {
+                players = (List<Player>)formater.Deserialize(fs);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("error");
+            }
+
+            fs.Close();
+            return players;
+        }
+        void save(List<Player> players)
+        {
+            FileStream fs = new FileStream("highscores.dat", FileMode.Create);
+            formater.Serialize(fs, players);
+            fs.Close();
+        }
+        List<Player> add(List<Player> players,Player player)
+        {
+            players.Add(player);
+            players = players.OrderBy(x => x.mistakes).ToList();
+            if (players.Count > 10) players.Remove(players.Last());
+            return players;
+        }
+
+
+
+
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -63,6 +134,9 @@ namespace MemoryGame
             pictureBox8.ContextMenu = cm8;
 
 
+            top10 = load();
+            update(top10);
+
         }
         public void image_change1(Object sender, EventArgs e)
         {
@@ -85,6 +159,12 @@ namespace MemoryGame
 
 
         }
+
+        private void textBox1_MouseEnter(object sender, EventArgs e)
+        {
+            textBox1.BackColor = Color.White;
+        }
+
         public void image_change4(Object sender, EventArgs e)
         {
             
@@ -122,25 +202,34 @@ namespace MemoryGame
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            List<Image> pics = new List<Image>();
-            foreach(Control s in this.Controls)
+            if (string.IsNullOrWhiteSpace(textBox1.Text))
             {
-                if (s.GetType() == typeof(PictureBox))
+                textBox1.BackColor = Color.Red;
+            }
+            else
+            {
+
+
+                List<Image> pics = new List<Image>();
+                foreach (Control s in this.Controls)
                 {
-                    PictureBox p = (PictureBox)s;
-                    pics.Add(p.Image);
+                    if (s.GetType() == typeof(PictureBox))
+                    {
+                        PictureBox p = (PictureBox)s;
+                        pics.Add(p.Image);
+                    }
+                }
+                GameStarted gm = new GameStarted(pics, textBox1.Text);
+                gm.ShowDialog();
+                if (gm.won)
+                { 
+                    top10=add( top10,new Player(textBox1.Text, gm.mistakes));
+                    update(top10);
+                    save(top10);
                 }
             }
-            GameStarted gm = new GameStarted(pics);
-            gm.ShowDialog();
         }
-
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
 
         }
