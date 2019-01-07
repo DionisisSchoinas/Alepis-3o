@@ -23,7 +23,7 @@ namespace MemoryGame
             InitializeComponent();
         }
         [Serializable]
-        class Player
+       public class Player
         {
            public string name;
            public int mistakes;
@@ -34,14 +34,8 @@ namespace MemoryGame
             }
         }
 
-        void update(List<Player> players)
-        {
-            richTextBox1.Clear();
-            foreach(Player player in players)
-            {
-                richTextBox1.Text += player.name + ':' + player.mistakes + Environment.NewLine;
-            }
-        }
+      
+        
         
         List<Player> load()
         {
@@ -135,7 +129,7 @@ namespace MemoryGame
 
 
             top10 = load();
-            update(top10);
+            
 
         }
         public void image_change1(Object sender, EventArgs e)
@@ -163,6 +157,12 @@ namespace MemoryGame
         private void textBox1_MouseEnter(object sender, EventArgs e)
         {
             textBox1.BackColor = Color.White;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Highscores highscores = new Highscores(top10);
+            highscores.ShowDialog();
         }
 
         public void image_change4(Object sender, EventArgs e)
@@ -224,7 +224,7 @@ namespace MemoryGame
                 if (gm.won)
                 { 
                     top10=add( top10,new Player(textBox1.Text, gm.mistakes));
-                    update(top10);
+                 
                     save(top10);
                 }
             }
