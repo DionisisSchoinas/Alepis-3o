@@ -243,3 +243,5 @@ paket-files/
 __pycache__/
 *.pyc
 *.ide-shm
+*.ide-shm
+*.ide-wal
