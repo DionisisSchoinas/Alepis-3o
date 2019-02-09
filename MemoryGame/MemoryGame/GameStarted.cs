@@ -86,7 +86,7 @@ namespace MemoryGame
 
         private void Select(object sender, EventArgs e, int i, PictureBox p)
         {
-            if (!usingPanel && p != prevPicture)
+            if (!usingPanel)
             {
                 if (empty) //If empty
                 {

@@ -160,43 +160,5 @@ namespace math_quiz
             obj = high;
 
         }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void startToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            button1_Click(sender, e);
-        }
-
-        private void calculatorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            button2_Click(sender, e);
-        }
-
-        private void clearDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            button3_Click(sender, e);
-        }
-
-        private void easyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            easy.Checked = true;
-            easy_CheckedChanged(sender, e);
-        }
-
-        private void mediumToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            medium.Checked = true;
-            medium_CheckedChanged(sender, e);
-        }
-
-        private void hardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            hard.Checked = true;
-            hard_CheckedChanged(sender, e);
-        }
     }
 }

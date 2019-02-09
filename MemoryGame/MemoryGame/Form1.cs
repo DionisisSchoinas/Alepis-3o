@@ -22,6 +22,7 @@ namespace MemoryGame
         {
             InitializeComponent();
         }
+
         [Serializable]
         class Player
         {
