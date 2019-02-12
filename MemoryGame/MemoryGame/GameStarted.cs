@@ -16,7 +16,11 @@ namespace MemoryGame
         List<Panel> covers;
         PictureBox prevPicture;
         Panel prevPanel, cur, tmpPanel;
-        bool empty, k, usingPanel;
+        bool empty, usingPanel;
+
+        int timer2_temp=0;
+        bool using2images = false;
+
         int allCovers;
 
         public bool won = false;
@@ -35,7 +39,7 @@ namespace MemoryGame
             prevPicture = new PictureBox();
             prevPanel = new Panel();
             empty = true;
-            k = false;
+            
             cur = new Panel();
             tmpPanel = new Panel();
             allCovers = 8;
@@ -47,28 +51,28 @@ namespace MemoryGame
         {
             Random rand = new Random();
             List<PictureBox> img = new List<PictureBox>();
-            foreach (Control s in this.Controls)
+            foreach (Control s in this.Controls)//foreach pic_box
             {
                 if (s.GetType() == typeof(PictureBox))
                 {
-                    PictureBox p = (PictureBox)s;   //Fill a list with the pictureboxes
-                    img.Add(p);
+                    PictureBox p = (PictureBox)s;   
+                    img.Add(p); //Fill a list with the pictureboxes
                 }
             }
             for (int i = 0; i < 16; i++)  //Pick random picturebox, random image and put the image in the picturebox
             {
-                int pictureboxIndex = rand.Next(img.Count() - 1); //Random picturebox
-                int picsIndex = rand.Next(pics.Count() - 1);  //Random image
-                img[pictureboxIndex].Image = pics[picsIndex];  //Place iamge on picturebox
+                int pictureboxIndex = rand.Next(img.Count()); //Random picturebox
+                int picsIndex = rand.Next(pics.Count());  //Random image
+                img[pictureboxIndex].Image = pics[picsIndex];  //Place image on picturebox
                 img.RemoveAt(pictureboxIndex);  //Remove elements from lists
                 pics.RemoveAt(picsIndex);
             }
-            timer1.Start();  //Start timer to ad dealy to player view
+            timer1.Start();  //Start timer to add delay to player view
         }
 
-        private void Hide(Panel p)
+        private void Hide(Panel p)//hides panels
         {
-            tmpPanel = p;
+            tmpPanel = p;//panel to hide
             timer3.Start();
         }
 
@@ -78,26 +82,30 @@ namespace MemoryGame
             label3.Text = game_time.ToString();
             if (game_time==0)
             {
+                MessageBox.Show("TIME IS UP!" + Environment.NewLine + "GAME OVER!");
                 game_timer.Stop();
-                MessageBox.Show("TIME IS UP!"+Environment.NewLine+"GAME OVER!");
                 this.Close();
             }
         }
 
         private void Select(object sender, EventArgs e, int i, PictureBox p)
         {
+            
             if (!usingPanel && p != prevPicture)
             {
-                if (empty) //If empty
+                
+                if (empty) //first image chosen
                 {
                     Hide(covers[i]);  //Hide clicked panel
                     prevPicture = p;  //Save image
                     prevPanel = covers[i];  //Save panel
                     empty = false;
                 }
-                else
+                else//second image chosen
                 {
+                    
                     Hide(covers[i]);  //Hide clicked panel
+                   
                     if (prevPicture.Image == p.Image)   //If the saved image matches the clicked one 
                     {
                         prevPicture = new PictureBox();  //Clear all saved images and panels
@@ -108,37 +116,45 @@ namespace MemoryGame
                     }
                     else
                     {
+                        System.Threading.Thread.Sleep(300);
                         cur = covers[i];  //Save the panel
-                        timer2.Start();  //Start timer to give delay to the images closing
+                        
                         empty = true;
+                        timer2.Start();  //Start timer to give delay to the images closing
+                        
                         mistakes += 1;
                         label4.Text = mistakes.ToString();
+                       
+
                     }
+                    
                 }
-                if (allCovers == 0)
+                if (allCovers == 0)//if all images opened
                 {
              
                     MessageBox.Show("GOOD JOB, YOU DID IT !!!" + Environment.NewLine + "Mistakes : "+mistakes);
+                    game_timer.Stop();
                     won = true;
                     this.Close();
                 }
             }
         }
 
-        private void timer3_Tick(object sender, EventArgs e)
+        private void timer3_Tick(object sender, EventArgs e)//closes the panel
         {
             usingPanel = true;
             tmpPanel.Width -= 10;
             if (tmpPanel.Width <= 10)
             {
-                tmpPanel.Visible = false;
+                tmpPanel.Visible = false;//makes it invisible
                 timer3.Stop();
                 tmpPanel.Size = new Size(80, 80);
                 usingPanel = false;
             }
+            
         }
 
-        private void timer1_Tick(object sender, EventArgs e) //Give time to look at the iamges
+        private void timer1_Tick(object sender, EventArgs e) //Gives time to look at the images
         {
             int index = 0;
             foreach (Control s in this.Controls)  //Create covers for each picture
@@ -151,7 +167,7 @@ namespace MemoryGame
                     covers[index].Size = p.Size;
                     covers[index].Location = p.Location;
                     covers[index].BackColor = Color.Wheat;
-                    int i = index;
+                    int i = index;// to avoid changing in the event handeler
                     PictureBox pic = p;
                     covers[index].Click += new EventHandler((sender2, e2) => Select(sender, e, i, pic));  //Create eventhander in which 
                     index++;                // we send the index of the panel and the picturebox as extra information
@@ -166,21 +182,37 @@ namespace MemoryGame
             timer1.Stop();
         }
 
+      
+
+
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (!usingPanel)  //If not locked from the opening timer
+            if (timer2_temp==0)  //Give user time to look at images picked before closing them
             {
-                if (k)  //Give user time to look at iamges picked before closing them
-                {
-                    prevPanel.Visible = true;  //Hide last image
-                    cur.Visible = true;  //Hide curent image
-                    prevPicture = new PictureBox();  //Clear saves
-                    prevPanel = new Panel();
-                    timer2.Stop();
-                    k = false;  //Reset stop
-                }
-                else k = true;
+                usingPanel = true;
+                timer2_temp++;
+
             }
+            else if (timer2_temp == 20)
+            {
+               
+                prevPanel.Visible = true;  //Hide last image
+                cur.Visible = true;  //Hide curent image
+
+                prevPicture = new PictureBox();  //Clear saves
+                prevPanel = new Panel();
+
+                usingPanel = false;
+                timer2_temp = 0;
+                timer2.Stop();
+            }
+
+            else
+            {
+                timer2_temp++;
+     
+            }
+          
         }
     }
 }
