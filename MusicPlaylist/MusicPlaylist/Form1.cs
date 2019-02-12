@@ -76,23 +76,7 @@ namespace MusicPlaylist
             button3.BackgroundImage = new Bitmap("Files/Pictures/Previous.png");
             button5.BackgroundImage = new Bitmap("Files/Pictures/Random.png");
             button4.BackgroundImage = new Bitmap("Files/Pictures/Repeat.png");
-
-            FileStream f = new FileStream("Files/Songs/songs.dat", FileMode.OpenOrCreate);
-            List<Song> top10;
-            try
-            {
-                top10 = (List<Song>)bf.Deserialize(f);
-            }
-            catch
-            {
-                top10 = new List<Song>();
-            }
-            f.Close();
-
-            //top10 = top10.Reverse();
             
-            AddPanels ap = new AddPanels();
-            //ap.AddPanels_OnGivenControl(this, flowLayoutPanel1, sender, e, false, new List<Song>(), true, top10);
 
         }
 
