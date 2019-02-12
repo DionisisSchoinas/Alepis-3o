@@ -171,7 +171,7 @@
             this.plus.TabIndex = 10;
             this.plus.Text = "+";
             this.plus.UseVisualStyleBackColor = true;
-            this.plus.Click += new System.EventHandler(this.plus_Click);
+            this.plus.Click += new System.EventHandler(this.button_click);
             // 
             // minus
             // 
@@ -182,7 +182,7 @@
             this.minus.TabIndex = 11;
             this.minus.Text = "-";
             this.minus.UseVisualStyleBackColor = true;
-            this.minus.Click += new System.EventHandler(this.minus_Click);
+            this.minus.Click += new System.EventHandler(this.button_click);
             // 
             // div
             // 
@@ -193,7 +193,7 @@
             this.div.TabIndex = 12;
             this.div.Text = "/";
             this.div.UseVisualStyleBackColor = true;
-            this.div.Click += new System.EventHandler(this.div_Click);
+            this.div.Click += new System.EventHandler(this.button_click);
             // 
             // mult
             // 
@@ -204,7 +204,7 @@
             this.mult.TabIndex = 13;
             this.mult.Text = "*";
             this.mult.UseVisualStyleBackColor = true;
-            this.mult.Click += new System.EventHandler(this.mult_Click);
+            this.mult.Click += new System.EventHandler(this.button_click);
             // 
             // delete
             // 

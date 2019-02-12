@@ -33,28 +33,14 @@ namespace math_quiz
             focus = numericUpDown2;
         }
 
-        private void plus_Click(object sender, EventArgs e)
+      
+        private void button_click(object sender, EventArgs e)
+
         {
-            symbol.Text = "+";
-            
-
+            Button temp = (Button)sender;
+            symbol.Text = temp.Text;
+            numericUpDown1_MouseClick(null, null);
         }
-
-        private void minus_Click(object sender, EventArgs e)
-        {
-            symbol.Text = "-";
-        }
-
-        private void mult_Click(object sender, EventArgs e)
-        {
-            symbol.Text = "*";
-        }
-
-        private void div_Click(object sender, EventArgs e)
-        {
-            symbol.Text = "/";
-        }
-
         private void numericUpDown2_MouseClick(object sender, MouseEventArgs e)
         {
             numericUpDown2.BackColor = Color.LightGreen;
@@ -129,21 +115,33 @@ namespace math_quiz
 
         private void equals_Click(object sender, EventArgs e)
         {
-           if (char.Parse(symbol.Text)=='+')
+            try
             {
-                label3.Text = (numericUpDown2.Value + numericUpDown1.Value).ToString();
+                if (char.Parse(symbol.Text) == '+')
+                {
+                    label3.Text = (numericUpDown2.Value + numericUpDown1.Value).ToString();
+                }
+                else if (char.Parse(symbol.Text) == '-')
+                {
+                    label3.Text = (numericUpDown2.Value - numericUpDown1.Value).ToString();
+                }
+                else if (char.Parse(symbol.Text) == '/')
+                {
+
+                    label3.Text = (numericUpDown2.Value / numericUpDown1.Value).ToString();
+                }
+                else if (char.Parse(symbol.Text) == '*')
+                {
+                    label3.Text = (numericUpDown2.Value * numericUpDown1.Value).ToString();
+                }
             }
-           else if (char.Parse(symbol.Text) == '-')
+            catch(DivideByZeroException)
             {
-                label3.Text = (numericUpDown2.Value - numericUpDown1.Value).ToString();
+                MessageBox.Show("Division by zero");
             }
-           else if (char.Parse(symbol.Text) == '/')
+            catch(Exception)
             {
-                label3.Text = (numericUpDown2.Value / numericUpDown1.Value).ToString();
-            }
-           else if (char.Parse(symbol.Text) == '*')
-            {
-                label3.Text = (numericUpDown2.Value * numericUpDown1.Value).ToString();
+                MessageBox.Show("Invalid operation");
             }
         }
     }

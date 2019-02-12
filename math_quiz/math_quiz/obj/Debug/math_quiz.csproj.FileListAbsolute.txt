@@ -22,3 +22,15 @@ J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\math_quiz\math_quiz\obj\D
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\math_quiz\math_quiz\obj\Debug\math_quiz.csproj.CoreCompileInputs.cache
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\math_quiz\math_quiz\obj\Debug\math_quiz.exe
 J:\documents\Dionisis\ergasies\c#\Repository\Alepis-3o\math_quiz\math_quiz\obj\Debug\math_quiz.pdb
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\bin\Debug\math_quiz.exe.config
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\bin\Debug\math_quiz.exe
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\bin\Debug\math_quiz.pdb
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\obj\Debug\math_quiz.csprojAssemblyReference.cache
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\obj\Debug\math_quiz.Form1.resources
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\obj\Debug\math_quiz.Form2.resources
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\obj\Debug\math_quiz.Form3.resources
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\obj\Debug\math_quiz.Properties.Resources.resources
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\obj\Debug\math_quiz.csproj.GenerateResource.cache
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\obj\Debug\math_quiz.csproj.CoreCompileInputs.cache
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\obj\Debug\math_quiz.exe
+C:\Users\Panepistimio\Desktop\Alepis-3o-master\math_quiz\math_quiz\obj\Debug\math_quiz.pdb

@@ -198,5 +198,11 @@ namespace math_quiz
             hard.Checked = true;
             hard_CheckedChanged(sender, e);
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Select easy,medium,hard to select difficulty \n\n   Easy :Number between -50 and 50 \n   Medium :Number between -100 and 100 \n   Hard :Number between -500 and 500 \n\nCalculator on the bottom right \nClear data to delete player scores");
+
+        }
     }
 }

@@ -68,7 +68,7 @@ namespace math_quiz
          
 
             time.Visible = false;
-            button1.Visible = false;
+        
 
             timer1.Enabled = false;
 
@@ -123,44 +123,55 @@ namespace math_quiz
 
         private void button1_Click(object sender, EventArgs e)
         {
-            timer1.Enabled = false;
-            int mistakes=0;
-            if (numericUpDown1.Value == result(int.Parse(x1.Text), int.Parse(y1.Text), Char.Parse(symbol1.Text))) numericUpDown1.BackColor = Color.Green;
-            else
+            if (button1.Text == "DONE")
             {
-                numericUpDown1.BackColor = Color.Red;
-                wrong1.Text = "->" + result(int.Parse(x1.Text), int.Parse(y1.Text), Char.Parse(symbol1.Text));
-                wrong1.Visible = true;
-                mistakes += 1;
+                timer1.Enabled = false;
+                int mistakes = 0;
+                if (numericUpDown1.Value == result(int.Parse(x1.Text), int.Parse(y1.Text), Char.Parse(symbol1.Text))) numericUpDown1.BackColor = Color.Green;
+                else
+                {
+                    numericUpDown1.BackColor = Color.Red;
+                    wrong1.Text = "->" + result(int.Parse(x1.Text), int.Parse(y1.Text), Char.Parse(symbol1.Text));
+                    wrong1.Visible = true;
+                    mistakes += 1;
 
-            }
-            if (numericUpDown2.Value == result(int.Parse(x2.Text), int.Parse(y2.Text), Char.Parse(symbol2.Text))) numericUpDown2.BackColor = Color.Green;
-            else
-            {
-                numericUpDown2.BackColor = Color.Red;
-                wrong2.Text = "->" +result(int.Parse(x2.Text), int.Parse(y2.Text), Char.Parse(symbol2.Text));
-                wrong2.Visible = true;
-                mistakes += 1;
+                }
+                if (numericUpDown2.Value == result(int.Parse(x2.Text), int.Parse(y2.Text), Char.Parse(symbol2.Text))) numericUpDown2.BackColor = Color.Green;
+                else
+                {
+                    numericUpDown2.BackColor = Color.Red;
+                    wrong2.Text = "->" + result(int.Parse(x2.Text), int.Parse(y2.Text), Char.Parse(symbol2.Text));
+                    wrong2.Visible = true;
+                    mistakes += 1;
 
+                }
+                if (numericUpDown3.Value == result(int.Parse(x3.Text), int.Parse(y3.Text), Char.Parse(symbol3.Text))) numericUpDown3.BackColor = Color.Green;
+                else
+                {
+                    numericUpDown3.BackColor = Color.Red;
+                    wrong3.Text = "->" + result(int.Parse(x3.Text), int.Parse(y3.Text), Char.Parse(symbol3.Text));
+                    wrong3.Visible = true;
+                    mistakes += 1;
+                }
+                if (numericUpDown4.Value == result(int.Parse(x4.Text), int.Parse(y4.Text), Char.Parse(symbol4.Text))) numericUpDown4.BackColor = Color.Green;
+                else
+                {
+                    numericUpDown4.BackColor = Color.Red;
+                    wrong4.Text = "->" + result(int.Parse(x4.Text), int.Parse(y4.Text), Char.Parse(symbol4.Text));
+                    wrong4.Visible = true;
+                    mistakes += 1;
+                }
+                game_over(mistakes, time_primary);
+
+                score = time_primary * (4 - mistakes);
+                if (score < 0) score = 0;
+                button1.Text = "CLOSE";
             }
-            if (numericUpDown3.Value == result(int.Parse(x3.Text), int.Parse(y3.Text), Char.Parse(symbol3.Text))) numericUpDown3.BackColor = Color.Green;
-            else
+            else if (button1.Text=="CLOSE")
             {
-                numericUpDown3.BackColor = Color.Red;
-                wrong3.Text = "->" + result(int.Parse(x3.Text), int.Parse(y3.Text), Char.Parse(symbol3.Text));
-                wrong3.Visible = true;
-                mistakes += 1;
+                this.Close();
             }
-            if (numericUpDown4.Value == result(int.Parse(x4.Text), int.Parse(y4.Text), Char.Parse(symbol4.Text))) numericUpDown4.BackColor = Color.Green;
-            else
-            {
-                numericUpDown4.BackColor = Color.Red;
-                wrong4.Text = "->" + result(int.Parse(x4.Text), int.Parse(y4.Text), Char.Parse(symbol4.Text));
-                wrong4.Visible = true;
-                mistakes += 1;
-            }
-            game_over(mistakes,time_primary);
-            score = time_primary * (4 - mistakes);
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
