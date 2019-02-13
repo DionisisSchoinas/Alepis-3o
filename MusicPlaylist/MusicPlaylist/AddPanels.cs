@@ -19,7 +19,7 @@ namespace MusicPlaylist
         public int Index { get { return selectedIndex; } set { selectedIndex = value; } }
         public List<int> indexList = new List<int>();
 
-        private void Selected(object sender, EventArgs e, int i, bool checkOn)
+        private void Selected(object sender, EventArgs e, int i, bool checkOn)  //i : index on saved lists   checkOn = false : allow only 1 panel to be selected 
         {
             if (!checkOn)
             {
@@ -61,7 +61,7 @@ namespace MusicPlaylist
 
         public void AddPanels_OnGivenControl(Form parent, Control input, object sender, EventArgs e, bool checkOn, List<Song> alreadyUsed, bool justSongs, List<Song> sourceList) //parent = form that contains the control
         {              //x = control we want to add panels in   checkON = if checkOn true then multiple panels can be selected
-            try        //alreadyUsed = if not null then the items in the list will be highlighted    justSongs = displaying songs (true) or playlists (false)    sL = source list for songs to be displayed
+            try        //alreadyUsed = if not null then the items in the list will be highlighted    justSongs = displaying songs (true) or playlists (false)    sourceList = source list for songs to be displayed
             {
                 parentForm = parent;
                 if (input.GetType() == typeof(FlowLayoutPanel))  //If type of input is FormLayoutPanel
@@ -195,25 +195,30 @@ namespace MusicPlaylist
                         pic.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));//so we can also send the current index / song 
                         pic.DoubleClick += new EventHandler(DoubleClick);
                         p.Controls.Add(pic);                                                       //as an argument for the other forms to access
+                        //Song name
                         lab1.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
                         lab1.DoubleClick += new EventHandler(DoubleClick);
                         tool1.SetToolTip(lab1, lab1.Text);
                         p.Controls.Add(lab1);
+                        //Length
                         lab3.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
                         lab3.DoubleClick += new EventHandler(DoubleClick);
                         tool3.SetToolTip(lab3, lab3.Text);
                         p.Controls.Add(lab3);
                         if (justSongs)
                         {
+                            //Artist name
                             tool3.SetToolTip(lab3, lab3.Text + " ( hh:mm:ss )");
                             lab2.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
                             lab2.DoubleClick += new EventHandler(DoubleClick);
                             tool2.SetToolTip(lab2, lab2.Text);
                             p.Controls.Add(lab2);
+                            //Music name
                             lab4.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
                             lab4.DoubleClick += new EventHandler(DoubleClick);
                             tool4.SetToolTip(lab4, lab4.Text);
                             p.Controls.Add(lab4);
+                            //Language
                             lab5.Click += new EventHandler((sender2, e2) => Selected(sender, e, index, checkOn));
                             lab5.DoubleClick += new EventHandler(DoubleClick);
                             tool5.SetToolTip(lab5, lab5.Text);
@@ -221,7 +226,7 @@ namespace MusicPlaylist
                         }
                         
                         //If the song already in the playlist highlight
-                        if (!justSongs && alreadyUsed.Count() != 0)
+                        if (!justSongs && alreadyUsed.Count() != 0)   //It works so I no touch
                         {
                             foreach (Song t in alreadyUsed)
                             {

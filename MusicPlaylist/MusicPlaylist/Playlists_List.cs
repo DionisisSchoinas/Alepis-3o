@@ -77,7 +77,6 @@ namespace MusicPlaylist
             select.Click += new EventHandler(Select);
             select.Text = "Play";
             select.BackColor = Color.LightGreen;
-            //play.Image = new Bitmap("");
             this.Controls.Add(select);
 
             Button add = new Button();
@@ -86,7 +85,6 @@ namespace MusicPlaylist
             add.Click += new EventHandler(Create);
             add.Text = "Add";
             add.BackColor = Color.LightGreen;
-            //exit.Image = new Bitmap("");
             this.Controls.Add(add);
 
             Button exit = new Button();
@@ -95,7 +93,6 @@ namespace MusicPlaylist
             exit.Click += new EventHandler(Exit);
             exit.Text = "Exit";
             exit.BackColor = Color.LightGreen;
-            //exit.Image = new Bitmap("");
             this.Controls.Add(exit);
         }
     }

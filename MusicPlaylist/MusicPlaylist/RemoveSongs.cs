@@ -91,7 +91,6 @@ namespace MusicPlaylist
             if (del == 1) remove.Text = "Create";
             else remove.Text = "Remove";
             remove.BackColor = Color.LightGreen;
-            //play.Image = new Bitmap("");
             this.Controls.Add(remove);
 
             Button exit = new Button();
@@ -100,7 +99,6 @@ namespace MusicPlaylist
             exit.Click += new EventHandler(Exit);
             exit.Text = "Exit";
             exit.BackColor = Color.LightGreen;
-            //exit.Image = new Bitmap("");
             this.Controls.Add(exit);
         }
     }

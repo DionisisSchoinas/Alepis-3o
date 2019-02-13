@@ -148,7 +148,6 @@ namespace MusicPlaylist
             create.Click += new EventHandler(Create);
             create.Text = "Create";
             create.BackColor = Color.LightGreen;
-            //play.Image = new Bitmap("");
             this.Controls.Add(create);
 
             Button exit = new Button();
@@ -157,7 +156,6 @@ namespace MusicPlaylist
             exit.Click += new EventHandler(Exit);
             exit.Text = "Cancel";
             exit.BackColor = Color.LightGreen;
-            //exit.Image = new Bitmap("");
             this.Controls.Add(exit);
         }
     }

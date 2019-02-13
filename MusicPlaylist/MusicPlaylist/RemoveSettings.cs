@@ -26,19 +26,19 @@ namespace MusicPlaylist
             button3.BackColor = Color.LightGreen;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)  //Cancel
         {
             choice = 0;
             this.Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)  //Remove song
         {
             choice = 1;
             this.Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)  //Remove playlist
         {
             choice = 2;
             this.Close();

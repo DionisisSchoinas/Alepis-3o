@@ -124,7 +124,7 @@ namespace MusicPlaylist
         private void button3_Click(object sender, EventArgs e)
         {
             int count = Directory.GetFiles("Files/Songs").Length;
-            openFileDialog1.Filter = "WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3|Other files|*.*";
+            openFileDialog1.Filter = "WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3|All files|*.*";
             openFileDialog1.FileName = "Song" + (count + 1).ToString();
             openFileDialog1.Title = "Choose a song";
             DialogResult result = openFileDialog1.ShowDialog();
@@ -147,7 +147,7 @@ namespace MusicPlaylist
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             int count = Directory.GetFiles("Files/Pictures").Length;
-            openFileDialog1.Filter = "PNG files (*.png)|*.png|JPEG files (*.jpg)|*.jpg|Bitmap files (*.bmp)|*.bmp|GIF files (*.gif)|*.gif|Other files|*.*";
+            openFileDialog1.Filter = "PNG files (*.png)|*.png|JPEG files (*.jpg)|*.jpg|Bitmap files (*.bmp)|*.bmp|GIF files (*.gif)|*.gif|All files|*.*";
             openFileDialog1.FileName = "Image" + (count + 1).ToString();
             openFileDialog1.Title = "Choose a picture";
             DialogResult result = openFileDialog1.ShowDialog();
@@ -225,7 +225,7 @@ namespace MusicPlaylist
                 MessageBox.Show("Song successfully added");
                 this.Close();
             }
-            else if (!adding)
+            else if (!adding)   //Else if editing
             {
                 if (list.Count() != 0)
                 {
@@ -238,7 +238,7 @@ namespace MusicPlaylist
                     FileStream f1 = new FileStream("Files/Songs/songs.dat", FileMode.Create);
                     bf1.Serialize(f1, list);
                     f1.Close();
-                    MessageBox.Show("Song successfully added");
+                    MessageBox.Show("Song successfully edited");
                     this.Close();
                 }
                 else MessageBox.Show("Oops , something happened and we couldn't edit the song");
